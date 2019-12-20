@@ -1,0 +1,36 @@
+{
+  "name": "date-fm",
+  "version": "1.0.0",
+  "description": "Modern JavaScript date formatting library,support browser and nodejs",
+  "main": "dist/date-fm.js",
+  "private": false,
+  "scripts": {
+    "build": "webpack"
+  },
+  "author": "$vinsurs <2407232109@qq.com>",
+  "bugs": {
+    "url": "https://github.com/Vinsurs/date-fm/issues",
+    "email": "2407232109@qq.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vinsurs/date-fm"
+  },
+  "keywords": [
+    "date",
+    "date-fm",
+    "date-fn",
+    "date-format",
+    "date-f",
+    "format-date"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-transform-named-capturing-groups-regex": "^7.7.4",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
+  }
+}
