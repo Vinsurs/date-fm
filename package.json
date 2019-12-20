@@ -1,6 +1,6 @@
 {
   "name": "date-fm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Modern JavaScript date formatting library,support browser and nodejs",
   "main": "dist/date-fm.js",
   "private": false,

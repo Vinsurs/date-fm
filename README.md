@@ -2,7 +2,7 @@
 
 - [What is 'date-fm'](#desc)
 - [Motivation](#motivation)
-- [Fetures](#features)
+- [Features](#features)
 - [Install](#install)
 - [Usage](#usage)
 - [Api](#api)
@@ -16,7 +16,7 @@
 
 With the frequent use of the date manipulation business in everyday coding, numerous libraries for formatting dates in JavaScript have been published on the market. So why do we need date-fm? Is known, the date in the JavaScript in the business operation and its frequent, but we in the use of other libraries operation when I was a bit annoying thing, that is some library is relatively larger size, and our business needs may be just for a date format just a matter of simple, but, the size of the introduced package is usually large, which will cause additional overhead to the performance of our project, which should be avoided as much as possible. Although some packages are small under the processing of building tools such as [webpack](https://webpack.github.io/), we don't need functions or functions that are not used in some packages.Therefore, we try to use the most concise syntax and the smallest code volume in this library to achieve the basic formatting function frequently used in business, and we will eliminate some functions that are not widely used to achieve the minimum code size.
 
-# <span id="fetures">Fetures</span>
+# <span id="features">Features</span>
 
 - **Smaller** size and more **powerful**. Under the premise of realizing specific and complex functions, the number of simplified functions should be controlled as much as possible to reduce the code size.
 - Support both **browser** environment and **[node.js](https://nodejs.org/en)** environment.
@@ -42,7 +42,7 @@ With the frequent use of the date manipulation business in everyday coding, nume
  yarn add date-fm
 ```
 
-# <span id="install">Usage</span>
+# <span id="usage">Usage</span>
 
 'date-fm' supports Commonjs, AMD and Browser side. You can use it according to different environments.
 
@@ -127,11 +127,11 @@ Let's call the date format object exposed by [date-fm](https://www.npmjs.com/pac
 
 - **action** : Returns the corresponding format string according to the specified date format;
 - **params** :  
-   `format`: format string,default to 'YYYY-MM-DD HH:II:SS'. see the following table for the [supported format symbols](#format).
+   `format`: format string,default to 'YYYY-MM-DD HH:II:SS'. see the following table for the supported [format](#format) symbols].
 
   `time` : Date object or timestamp to format,default to current time.
 
-  <summary id="format">supported format symbols</summary>
+  <span id="format">supported format symbols</span>
 
 | symbol | description                                   |
 | ------ | --------------------------------------------- |
@@ -207,7 +207,7 @@ supported tokens are: `year(s)`, `month(s)`, `day(s)`, `week(s)` ,`hour(s)`, `mi
 
 > **Note:** The above token and operator represent a certain meaning. In order to meet the specific application, try **not to mix** the operator with the following specific token:`now` ,`lastweek` ,`lastyear`, `lastmonth` ,`yestoday`, `tomorrow`, `today`;
 
-`format`:format string ,type: `string`|`false`.see valid [formatting symbols](#format) above
+`format`:format string ,type: `string`|`false`.see valid [format](#format) symbols above
 
 > **Note**: If format is set to `false`, it will return a parsed date object, otherwise it will return the format string of the parsed object
 
