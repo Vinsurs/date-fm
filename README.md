@@ -24,7 +24,7 @@ With the frequent use of the date manipulation business in everyday coding, nume
 
 # <span id="install">Install</span>
 
-`node`:
+`npm`:
 
 ```js
  npm install date-fm --save
@@ -48,45 +48,50 @@ With the frequent use of the date manipulation business in everyday coding, nume
 
 ### Commonjs
 
-1. Formate date
-   - The easiest way to use it is:
+1.  Formate date
 
-```js
-const formate = require("date-fm");
-console.log(formate()); // output is "2018-12-20 16:25:55",depends on current date
-// alias to `formate`
-console.log(formate.format()); // output is "2018-12-20 16:25:55",depends on current date
-```
+    - The easiest way to use it is:
 
-- Customized use:
+      ```js
+      const formate = require("date-fm");
+      console.log(formate()); // output is "2018-12-20 16:25:55",depends on current date
+      // alias to `formate`
+      console.log(formate.format()); // output is "2018-12-20 16:25:55",depends on current date
+      ```
 
-```js
-const formate = require("date-fm");
-console.log(formate("YYYY/MM/DD HH:II:SS a", new Date(2018, 12, 20))); // output is "2018/12/20 00:00:00 am"
-// alias to `formate`
-console.log(formate.format("YYYY/MM/DD HH:II:SS a", new Date(2018, 12, 20))); // output is "2018/12/20 00:00:00 am"
-```
+    - Customized use:
 
-2. Resolve relative date
+      ```js
+      const formate = require("date-fm");
+      console.log(formate("YYYY/MM/DD HH:II:SS a", new Date(2018, 12, 20))); // output is "2018/12/20 00:00:00 am"
+      // alias to `formate`
+      console.log(
+        formate.format("YYYY/MM/DD HH:II:SS a", new Date(2018, 12, 20))
+      ); // output is "2018/12/20 00:00:00 am"
+      ```
 
-```js
-const formate = require("date-fm");
-console.log(formate.resolve("+3days4hours")); // output is "2019-12-20 20:25:55"
-console.log(formate.resolve("-3years2weeks")); // output is "2016-12-20 16:25:55"
-console.log(formate.relative(new Date(2017, 8, 24)));// output is "2 years ago"
-let timestamp = Date.now();
-console.log(formate.relative(timestamp)));// output is "2 minutes ago"
-```
+2.  Resolve relative date
 
-3. Compare date
+        ```js
+        const formate = require("date-fm");
+        console.log(formate.resolve("+3days4hours")); // output is "2019-12-20 20:25:55"
+        console.log(formate.resolve("-3years2weeks","YYYY/MM/DD HH:II:SS a")); // output is "2016/12/20 16:25:55 pm"
+        console.log(formate.resolve("lastweek")); // output is "2019-12-13 16:25:55"
+        let date= formate.resolve("lastweek",false); // return a native Date Object
+        console.log(formate.relative(new Date(2017, 8, 24)));// output is "2 years ago"
+        let timestamp = Date.now();
+        console.log(formate.relative(timestamp)));// output is "2 minutes ago"
+        ```
 
-```js
-const formate = require("date-fm");
-console.log(formate.isBefore(new Date(2017, 8, 24))); // output is "true"
-console.log(formate.isAfter(new Date(2017, 8, 24), new Date())); // output is "false"
-console.log(formate.isLeapYear(2082)); // output is "false"
-console.log(formate.compare(new Date(2017, 8, 24), new Date(2018, 8, 24))); // output is "-1"
-```
+3.  Compare date
+
+        ```js
+        const formate = require("date-fm");
+        console.log(formate.isBefore(new Date(2017, 8, 24))); // output is "true"
+        console.log(formate.isAfter(new Date(2017, 8, 24), new Date())); // output is "false"
+        console.log(formate.isLeapYear(2082)); // output is "false"
+        console.log(formate.compare(new Date(2017, 8, 24), new Date(2018, 8, 24))); // output is "-1"
+        ```
 
 ### Browser
 
@@ -102,7 +107,7 @@ The easiest way to use it in a browser is to introduce script tags, this exposes
     <script src="./node_modules/dist/date-fm.js"></script>
     <script>
       // window.dateFm is the date formator
-      let date = window.dateFm.resolve("tomorrow", false); // return a Date Object
+      let date = window.dateFm.resolve("tomorrow", false); // return a native Date Object
       // todo...
     </script>
   </body>
@@ -121,17 +126,17 @@ let sDate = formate.format();
 
 # <span id="api">Api</span>
 
-Let's call the date format object exposed by [date-fm](https://www.npmjs.com/package/date-fm) `format`, and then
+Let's call the date format object exposed by [date-fm](https://www.npmjs.com/package/date-fm) `formate`, and then
 
-#### formate(format?:String, time?:Date|Timestamp = new Date()):String
+#### <span id= "formate">formate(format?:String, time?:Date|Timestamp = new Date()):String</span>
 
 - **action** : Returns the corresponding format string according to the specified date format;
 - **params** :  
-   `format`: format string,default to 'YYYY-MM-DD HH:II:SS'. see the following table for the supported [format](#format) symbols].
+   `format`: format string,default to 'YYYY-MM-DD HH:II:SS'. see the following table for the [supported format symbols](#format).
 
   `time` : Date object or timestamp to format,default to current time.
 
-  <span id="format">supported format symbols</span>
+The following table is <span id="format">**supported format characters:**</span>
 
 | symbol | description                                   |
 | ------ | --------------------------------------------- |
@@ -154,7 +159,7 @@ Let's call the date format object exposed by [date-fm](https://www.npmjs.com/pac
 
 #### formate.format(format?:String, date?:Date|Timestamp = new Date()):String
 
-- **action** : The alias of [formate]
+- **action** : The alias of [formate](#formate) above.
 
 #### formate.isLeapYear(year:Number|String|Date)
 
@@ -205,11 +210,11 @@ supported operators are: `+(add)` ,`-(sub)`
 
 supported tokens are: `year(s)`, `month(s)`, `day(s)`, `week(s)` ,`hour(s)`, `minute(s)`, `second(s)` ,`millisecond(s)`, `now` ,`lastweek` ,`lastyear`, `lastmonth` ,`yestoday`, `tomorrow`, `today`;
 
-> **Note:** The above token and operator represent a certain meaning. In order to meet the specific application, try **not to mix** the operator with the following specific token:`now` ,`lastweek` ,`lastyear`, `lastmonth` ,`yestoday`, `tomorrow`, `today`;
+> **Note:** The above token and operator represent a certain meaning. In order to meet the specific application, try **not to** mix the operator `+` or `-` with the following specific token:`now` ,`lastweek` ,`lastyear`, `lastmonth` ,`yestoday`, `tomorrow`, `today`,this will cause parsing errors!
 
-`format`:format string ,type: `string`|`false`.see valid [format](#format) symbols above
+`format`:format string ,type: `string`|`false`.see valid [format](#format) symbols above.
 
-> **Note**: If format is set to `false`, it will return a parsed date object, otherwise it will return the format string of the parsed object
+> **Note**: If format is set to `false`, it will return a parsed date object, otherwise it will return the format string of the parsed object!
 
 #### formate.relative(date:Date|timestamp):String
 
