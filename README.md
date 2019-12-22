@@ -72,26 +72,26 @@ With the frequent use of the date manipulation business in everyday coding, nume
 
 2.  Resolve relative date
 
-        ```js
-        const formate = require("date-fm");
-        console.log(formate.resolve("+3days4hours")); // output is "2019-12-20 20:25:55"
-        console.log(formate.resolve("-3years2weeks","YYYY/MM/DD HH:II:SS a")); // output is "2016/12/20 16:25:55 pm"
-        console.log(formate.resolve("lastweek")); // output is "2019-12-13 16:25:55"
-        let date= formate.resolve("lastweek",false); // return a native Date Object
-        console.log(formate.relative(new Date(2017, 8, 24)));// output is "2 years ago"
-        let timestamp = Date.now();
-        console.log(formate.relative(timestamp)));// output is "2 minutes ago"
-        ```
+```js
+const formate = require("date-fm");
+console.log(formate.resolve("+3days4hours")); // output is "2019-12-20 20:25:55"
+console.log(formate.resolve("-3years2weeks","YYYY/MM/DD HH:II:SS a")); // output is "2016/12/20 16:25:55 pm"
+console.log(formate.resolve("lastweek")); // output is "2019-12-13 16:25:55"
+let date= formate.resolve("lastweek",false); // return a native Date Object
+console.log(formate.relative(new Date(2017, 8, 24)));// output is "2 years ago"
+let timestamp = Date.now();
+console.log(formate.relative(timestamp)));// output is "2 minutes ago"
+```
 
 3.  Compare date
 
-        ```js
-        const formate = require("date-fm");
-        console.log(formate.isBefore(new Date(2017, 8, 24))); // output is "true"
-        console.log(formate.isAfter(new Date(2017, 8, 24), new Date())); // output is "false"
-        console.log(formate.isLeapYear(2082)); // output is "false"
-        console.log(formate.compare(new Date(2017, 8, 24), new Date(2018, 8, 24))); // output is "-1"
-        ```
+```js
+const formate = require("date-fm");
+console.log(formate.isBefore(new Date(2017, 8, 24))); // output is "true"
+console.log(formate.isAfter(new Date(2017, 8, 24), new Date())); // output is "false"
+console.log(formate.isLeapYear(2082)); // output is "false"
+console.log(formate.compare(new Date(2017, 8, 24), new Date(2018, 8, 24))); // output is "-1"
+```
 
 ### Browser
 
