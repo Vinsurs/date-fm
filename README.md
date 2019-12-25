@@ -63,7 +63,7 @@ With the frequent use of the date manipulation business in everyday coding, nume
 
       ```js
       const formate = require("date-fm");
-      console.log(formate("YYYY/MM/DD HH:II:SS a", new Date(2018, 12, 20))); // output is "2018/12/20 00:00:00 am"
+      console.log(formate("YYYY/MM/DD HH:II:SS aa", new Date(2018, 12, 20))); // output is "2018/12/20 00:00:00 am"
       console.log(formate("YY/mm/dd hh:ii:ss  WW")); // output is "19/12/25 23:23:59  Wednesday"
       // Customize the display text for months and weeks
       console.log(
@@ -88,7 +88,7 @@ With the frequent use of the date manipulation business in everyday coding, nume
       ); // output is "19/12/25 23:23:59 Dec Wed"
       // alias to `formate`
       console.log(
-        formate.format("YYYY/MM/DD HH:II:SS a", new Date(2018, 12, 20))
+        formate.format("YYYY/MM/DD HH:II:SS aa", new Date(2018, 12, 20))
       ); // output is "2018/12/20 00:00:00 am"
       ```
 
@@ -97,7 +97,7 @@ With the frequent use of the date manipulation business in everyday coding, nume
 ```js
 const formate = require("date-fm");
 console.log(formate.resolve("+3days4hours")); // output is "2019-12-20 20:25:55"
-console.log(formate.resolve("-3years2weeks","YYYY/MM/DD HH:II:SS a")); // output is "2016/12/20 16:25:55 pm"
+console.log(formate.resolve("-3years2weeks","YYYY/MM/DD HH:II:SS aa")); // output is "2016/12/20 16:25:55 pm"
 console.log(formate.resolve("lastweek")); // output is "2019-12-13 16:25:55"
 let date= formate.resolve("lastweek",false); // return a native Date Object
 console.log(formate.relative(new Date(2017, 8, 24)));// output is "2 years ago"
