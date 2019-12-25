@@ -5,34 +5,87 @@ const {
   normalize,
   isDate
 } = require("../libs/helper");
-/*
-@action :
-    formate date to assigned format
-@params:
-    -format:String
-      all supported date formate token:
-        YYYY    2018
-        YY      18
-        MM      03
-        mm      3
-        DD      08
-        dd      8
-        HH      06 12 22h
-        hh      6 12
-        KK      06 02 12h
-        kk      6 2
-        II      08
-        ii      8
-        SS      02
-        ss      2
-        A       'AM'
-        a       'am'
-    -date:Date|timestamp
+
+// constants
+const monthsAbbr = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+];
+
+const monthsFull = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+
+const daysAbbr = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+const daysFull = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+];
+/**
+@description    formate date to assigned format
+@param format {String} formatting tokens ,default to `YYYY-MM-DD HH:II:SS`; all supported date formate token:
+        `YYYY` eg.   2018,
+        `YY`   eg.   18,
+        `MM`   eg.   03,
+        `mm`   eg.   3,
+        `DD`   eg.   08,
+        `dd`   eg.   8,
+        `HH`   eg.   06 ,12 ,22h format,
+        `hh`   eg.   6 ,12,
+        `KK`   eg.   06 ,02 ,12h format,
+        `kk`   eg.   6 ,2,
+        `II`   eg.   08,
+        `ii`   eg.   8,
+        `SS`   eg.   02,
+        `ss`   eg.   2,
+        `AA`    eg.   'AM',
+        `aa`    eg.   'am',
+        `jj`    eg.   365|366,
+        `NN`    eg.   'December',
+        `nn`    eg.   'Dec',
+        `WW`    eg.   'Sunday',
+        `ww`    eg.   'Sun'
+;
+@param  date {Date|Number} Date Object or timestamp,default to current time
+@param  options {Object} Optional,custom month and week configuration objects
+@param  options.weeks {Array} Array of custom weeks
+@param  options.months {Array} Array of custom months
     
-@return :A date string in the specified format
+@returns {String} A date string in the specified format
 
 */
-function formate(format = "YYYY-MM-DD HH:II:SS", date = new Date()) {
+function formate(
+  format = "YYYY-MM-DD HH:II:SS",
+  date = new Date(),
+  options = {}
+) {
   if (
     "number" !== typeof date &&
     "number" !== typeof Number(date) &&
@@ -41,6 +94,12 @@ function formate(format = "YYYY-MM-DD HH:II:SS", date = new Date()) {
     throw new TypeError(
       `Cannot resolve 'date' parameter,The parameter 'date' must be either a Date object or a timestamp that represents date`
     );
+  }
+  if (options.months && !(options.months instanceof Array)) {
+    throw new TypeError(`the parameter 'option.months' must be an array`);
+  }
+  if (options.weeks && !(options.weeks instanceof Array)) {
+    throw new TypeError(`the parameter 'option.weeks' must be an array`);
   }
   date = new Date(date);
   let matchers = [
@@ -104,12 +163,40 @@ function formate(format = "YYYY-MM-DD HH:II:SS", date = new Date()) {
       replace: date.getSeconds()
     },
     {
-      test: /A/,
+      test: /A{2}/,
       replace: date.getHours() > 12 ? "PM" : "AM"
     },
     {
-      test: /a/,
+      test: /a{2}/,
       replace: date.getHours() > 12 ? "pm" : "am"
+    },
+    {
+      test: /j{2}/,
+      replace: formate.isLeapYear(date.getFullYear()) ? "366" : "365"
+    },
+    {
+      test: /N{2}/,
+      replace: options.months
+        ? options.months[date.getMonth()]
+        : monthsFull[date.getMonth()]
+    },
+    {
+      test: /n{2}/,
+      replace: options.months
+        ? options.months[date.getMonth()]
+        : monthsAbbr[date.getMonth()]
+    },
+    {
+      test: /W{2}/,
+      replace: options.weeks
+        ? options.weeks[date.getDay()]
+        : daysFull[date.getDay()]
+    },
+    {
+      test: /w{2}/,
+      replace: options.weeks
+        ? options.weeks[date.getDay()]
+        : daysAbbr[date.getDay()]
     }
   ];
   matchers.forEach(matcher => {
@@ -118,15 +205,15 @@ function formate(format = "YYYY-MM-DD HH:II:SS", date = new Date()) {
   return format;
 }
 /**
- * @action The alias of formate
+ * @description The alias of `formate`
  */
-formate.format = function(format, date = new Date()) {
+formate.format = function(format, date = new Date(), options = {}) {
   return formate(format, date);
 };
 /**
- * @action Decide if it's a leap year
- * @params year:Number|String(can be converted to Number)|Date
- * @returns Boolean
+ * @description Decide if it's a leap year
+ * @param year {Number|String|Date}
+ * @returns {Boolean}
  */
 formate.isLeapYear = function(year) {
   if (year instanceof Date) {
@@ -142,58 +229,61 @@ formate.isLeapYear = function(year) {
   return year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
 };
 /**
- * @action Determine whether date1 precedes date2
- * @params date1,date2:Date
- * @returns Boolean
+ * @description Determine whether target precedes comparator
+ * @param target {Date} Date to compare
+ * @param comparator {Date} Date to be compared;default to current time
+ * @returns {Boolean}
  */
-formate.isBefore = function(date1, date2 = new Date()) {
-  if (!isDate(date1) && !isDate(date1)) {
-    throw new TypeError(`this function should receive Date Object for params`);
+formate.isBefore = function(target, comparator = new Date()) {
+  if (!isDate(target) && !isDate(comparator)) {
+    throw new TypeError(`this function should receive Date Object for param`);
   }
-  return date1.getTime() < date2.getTime();
+  return target.getTime() < comparator.getTime();
 };
 /**
- * @action Determine whether date1 follows date2
- * @params date1,date2:Date
- * @returns Boolean
+ * @description Determine whether target follows comparator
+ * @param target {Date} Date to compare
+ * @param comparator {Date} Date to be compared;default to current time
+ * @returns {Boolean}
  */
-formate.isAfter = function(date1, date2 = new Date()) {
-  if (!isDate(date1) && !isDate(date1)) {
-    throw new TypeError(`this function should receive Date Object for params`);
+formate.isAfter = function(target, comparator = new Date()) {
+  if (!isDate(target) && !isDate(comparator)) {
+    throw new TypeError(`this function should receive Date Object for param`);
   }
-  return date1.getTime() > date2.getTime();
+  return target.getTime() > comparator.getTime();
 };
 /**
- * @action Determine if two dates are equal
- * @params date1,date2:Date
- * @returns Boolean
+ * @description Determine if two dates are equal
+ * @param target {Date} Date to compare
+ * @param comparator {Date} Date to be compared;default to current time
+ * @returns {Boolean}
  */
-formate.isEqual = function(date1, date2 = new Date()) {
-  if (!isDate(date1) && !isDate(date1)) {
-    throw new TypeError(`this function should receive Date Object for params`);
+formate.isEqual = function(target, comparator = new Date()) {
+  if (!isDate(target) && !isDate(comparator)) {
+    throw new TypeError(`this function should receive Date Object for param`);
   }
-  return date1.getTime() === date2.getTime();
+  return target.getTime() === comparator.getTime();
 };
 /**
- * @action Compare two dates
- * @params date1,date2:Date
- * @returns -1|0|1
+ * @description Compare two dates
+ * @param target {Date} Date to compare
+ * @param comparator {Date} Date to be compared;default to current time
+ * @returns {Number} -1 if target is less than comparator, 0 if they are equal, 1 if target is more than comparator
  */
-formate.compare = function(date1, date2 = new Date()) {
-  return formate.isEqual(date1, date2)
+formate.compare = function(target, comparator = new Date()) {
+  return formate.isEqual(target, comparator)
     ? 0
-    : formate.isBefore(date1, date2)
+    : formate.isBefore(target, comparator)
     ? -1
     : 1;
 };
 /**
- * @action :compute relative date
- * @params :
-    -relative   The relative date   +3year4month
+ * @description compute relative date
+ * @param relative {String}  The relative date ,eg. `+3year4month`,then:
             oparator:    +(add)      -(sub)
-            supportedToken: year  month  day week hour minute second millisecond now lastweek lastyear lastmonth yestoday tomorrow today
-    -format?:String 
-   @return Date | String
+            supportedToken: `year`  `month`  `week` `day` `hour` `minute` `second` `millisecond` `lastyear` `lastmonth` `lastweek` `yestoday` `today` `tomorrow` `now` 
+   @param format{String} optional,default to `YYYY-MM-DD HH:II:SS` 
+   @returns {Date|String} If `format` is set to false, the parsed date object will be returned, otherwise the format string will be returned
  */
 formate.resolve = function(relative, format = "YYYY-MM-DD HH:II:SS") {
   relative = trim(relative);
@@ -210,7 +300,6 @@ formate.resolve = function(relative, format = "YYYY-MM-DD HH:II:SS") {
     let { ayear, amonth, aweek, aday, ahour, aminute, asecond, ams } = reg.exec(
       relative.slice(1)
     ).groups;
-    console.log();
     ayear = normalize(ayear);
     amonth = normalize(amonth);
     aweek = normalize(aweek);
@@ -257,17 +346,20 @@ formate.resolve = function(relative, format = "YYYY-MM-DD HH:II:SS") {
         hours = 0;
         minutes = 0;
         seconds = 0;
+        ms = 0;
         break;
       case "tomorrow":
         date += 1;
         hours = 0;
         minutes = 0;
         seconds = 0;
+        ms = 0;
         break;
       case "today":
         hours = 0;
         minutes = 0;
         seconds = 0;
+        ms = 0;
         break;
     }
   }
@@ -282,10 +374,10 @@ formate.resolve = function(relative, format = "YYYY-MM-DD HH:II:SS") {
     );
   }
 };
-/*
- * @action Calculates the specified date relative to the current time
- *@params date:Date|timestamp
- *@return A string relative to the current time
+/**
+ * @description Calculates the specified date relative to the current time
+ * @param date {Date|Number} Date Object or timestamp
+ * @returns {String} A string relative to the current time
  */
 formate.relative = function(date) {
   if (
@@ -357,5 +449,28 @@ formate.relative = function(date) {
     }
   }
   return result;
+};
+/**
+ * @description Judge whether the date is within the specified range
+ * @param target {Date|timestamp} Date to judge
+ * @param from {Date|timestamp} Start of date range
+ * @param end {Date|timestamp} End of date range
+ * @returns {Bollean} Returns `true` if the specified date is in the range, `false` otherwise
+ */
+formate.isBetween = function(target, start, end) {
+  if (arguments.length !== 3) {
+    throw new RangeError(
+      `3 parameters are required ,but ${arguments.length} present`
+    );
+  }
+  [target, start, end].forEach(item => {
+    if ("number" !== typeof item && !isDate(item)) {
+      throw new TypeError(`Parameters must be type of Number or Date`);
+    }
+  });
+  target = new Date(target);
+  start = new Date(start);
+  end = new Date(end);
+  return formate.isAfter(target, start) && formate.isBefore(target, end);
 };
 module.exports = formate;

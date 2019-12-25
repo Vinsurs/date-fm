@@ -1,7 +1,7 @@
 /**
- * @action :pad num with zero
- * @param {*} n
- * @return padded string
+ * @description pad num with zero
+ * @param n {Number}
+ * @returns {String} padded string
  */
 
 function padWithZero(n) {
@@ -11,44 +11,46 @@ function padWithZero(n) {
   return n;
 }
 /**
- * @action :strip space in string
- * @param {*} str
- * @return  string
+ * @description strip space in string
+ * @param str {String}
+ * @returns  {string} String with leading and trailing spaces removed
  */
 function trim(str) {
   return str.replace(/^(\s+)|(\s+)$/g, "");
 }
 /**
- * @action :Determines whether a string begins with the specified character
- * @param {*} str opt
- * @return padded string
+ * @description Determines whether a string begins with the specified character
+ * @param str {String}
+ * @param opt {String}
+ * @returns {String} padded string
  */
 function startsWith(str, opt) {
   return str.indexOf(opt) === 0;
 }
 /**
- * @action :Determines whether a string ends with the specified character
- * @param {*} str opt
- * @return padded string
+ * @description Determines whether a string ends with the specified character
+ * @param str {String}
+ * @param opt {String}
+ * @returns {String} padded string
  */
 function endsWith(str, opt) {
   return str.indexOf(opt) === str.length - opt.length;
 }
 /**
- * @action :normalize num or str
- * @param {*} item
- * @return number
+ * @description normalize num or str
+ * @param item {Number|String}
+ * @returns {number}
  */
 function normalize(item) {
   return Number(item) || 0;
 }
 /**
- * @action :Determines whether it is a date object
- * @param {*} d
- * @return number
+ * @description Determines whether it is a date object
+ * @param date {Date}
+ * @returns {Bollean}
  */
-function isDate(d) {
-  return d instanceof Date;
+function isDate(date) {
+  return date instanceof Date;
 }
 module.exports = {
   padWithZero,

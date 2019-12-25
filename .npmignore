@@ -3,4 +3,5 @@
 /src
 package-lock.json
 webpack.config.js
-config
+/test
+/libs
