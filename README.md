@@ -1,28 +1,17 @@
-# Table of contents
+# date-fm
 
-- [What is 'date-fm'](#desc)
-- [Motivation](#motivation)
-- [Features](#features)
-- [Install](#install)
-- [Usage](#usage)
-- [Api](#api)
-- [Parsing strings to Date](#parsestr)
+`date-fm` is a JavaScript library for date formatting,supports **browser** and **[node.js](https://nodejs.org/en)**.
 
-# <span id="desc">What is 'date-fm'</span>
+# Features
 
-`date-fm`= **data**-**f**ormate-**m**ini, it is a JavaScript library for date formatting,and attempts to achieve more complex and frequent business requirements with smaller code size and more streamlined function functions
-
-# <span id="motivation">Motivation</span>
-
-With the frequent use of the date manipulation business in everyday coding, numerous libraries for formatting dates in JavaScript have been published on the market. So why do we need date-fm? Is known, the date in the JavaScript in the business operation and its frequent, but we in the use of other libraries operation when I was a bit annoying thing, that is some library is relatively larger size, and our business needs may be just for a date format just a matter of simple, but, the size of the introduced package is usually large, which will cause additional overhead to the performance of our project, which should be avoided as much as possible. Although some packages are small under the processing of building tools such as [webpack](https://webpack.github.io/), we don't need functions or functions that are not used in some packages.Therefore, we try to use the most concise syntax and the smallest code volume in this library to achieve the basic formatting function frequently used in business, and we will eliminate some functions that are not widely used to achieve the minimum code size.
-
-# <span id="features">Features</span>
-
-- **Smaller** size and more **powerful**. Under the premise of realizing specific and complex functions, the number of simplified functions should be controlled as much as possible to reduce the code size.
 - Support both **browser** environment and **[node.js](https://nodejs.org/en)** environment.
-- Simple API can help you achieve basic functions and improve your development efficiency.
+- Resolve to the corresponding date expression string or date object according to the format string.
+- Support calculation of relative date.
+- Support for custom week and month strings.
+- Many date format characters complete your most complex formatting in the simplest way.
+- Some practical date comparison functions are provided.
 
-# <span id="install">Install</span>
+# Install
 
 `npm`:
 
@@ -33,7 +22,7 @@ With the frequent use of the date manipulation business in everyday coding, nume
 `bower`:
 
 ```js
- bower install date-fm
+ bower install date-fm --save
 ```
 
 `yarn`:
@@ -42,9 +31,9 @@ With the frequent use of the date manipulation business in everyday coding, nume
  yarn add date-fm
 ```
 
-# <span id="usage">Usage</span>
+# Usage
 
-'date-fm' supports Commonjs, AMD and Browser side. You can use it according to different environments.
+'date-fm' supports **Commonjs**, **AMD** and **Browser side**. You can use it according to different environments.
 
 ### Commonjs
 
@@ -54,9 +43,9 @@ With the frequent use of the date manipulation business in everyday coding, nume
 
       ```js
       const formate = require("date-fm");
-      console.log(formate()); // output is "2018-12-20 16:25:55",depends on current date
+      console.log(formate()); // output is "2018-12-20 16:25:55",default to current date
       // alias to `formate`
-      console.log(formate.format()); // output is "2018-12-20 16:25:55",depends on current date
+      console.log(formate.format()); // output is "2018-12-20 16:25:55",default to current date
       ```
 
     - Customized use:
@@ -65,7 +54,7 @@ With the frequent use of the date manipulation business in everyday coding, nume
       const formate = require("date-fm");
       console.log(formate("YYYY/MM/DD HH:II:SS aa", new Date(2018, 12, 20))); // output is "2018/12/20 00:00:00 am"
       console.log(formate("YY/mm/dd hh:ii:ss  WW")); // output is "19/12/25 23:23:59  Wednesday"
-      // Customize the display text for months and weeks
+      // Customize the display text for months and weekdays
       console.log(
         formate("YY/mm/dd hh:ii:ss NN WW", new Date(), {
           months: [
@@ -83,7 +72,7 @@ With the frequent use of the date manipulation business in everyday coding, nume
             "Dec"
           ],
           // Note : the first item in the array is Sunday!
-          weeks: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+          weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
         })
       ); // output is "19/12/25 23:23:59 Dec Wed"
       // alias to `formate`
@@ -150,11 +139,11 @@ let sDate = formate.format();
 // ...
 ```
 
-# <span id="api">Api</span>
+# Api
 
 Let's call the date format object exposed by [date-fm](https://www.npmjs.com/package/date-fm) `formate`, and then
 
-#### <span id= "formate">formate(format?:String, time?:Date|Timestamp = new Date(),options?:{months?:String[],weeks?:String[]}={}):String</span>
+#### <span id= "formate">formate(format?:String, time?:Date|Timestamp = new Date(),options?:{months?:String[],weekdays?:String[]}={}):String</span>
 
 - **description** : Returns the corresponding format string according to the specified date format;
 - **params** :  
@@ -162,9 +151,9 @@ Let's call the date format object exposed by [date-fm](https://www.npmjs.com/pac
 
   `time` :(Date|Number) Date object or timestamp to format,default to current time.
 
-  `options`:(Object:{weeks,months}) Optional,custom month and week configuration objects,default to {};
+  `options`:(Object:{weekdays,months}) Optional,custom month and weekday configuration objects,default to {};
 
-  `options.weeks` :{Array} Array of custom weeks,
+  `options.weekdays` :{Array} Array of custom weekdays,
 
   `options.months`: {Array} Array of custom months
 
@@ -193,12 +182,12 @@ The following table is <span id="format">**supported format symbols:**</span>
 | jj     | Days of the current year,eg. '365'                                                                  | '366' |
 | NN     | Complete spelling of English month names,eg.'December',can be overridden by custom `options.months` |
 | nn     | Abbreviation of English month name,eg. 'Dec',can be overridden by custom `options.months`           |
-| WW     | Complete spelling of English week names ,eg. 'Sunday',can be overridden by custom `options.weeks`   |
-| ww     | Abbreviation of English week name, eg. 'Sun' ,can be overridden by custom `options.weeks`           |
+| WW     | Complete spelling of English week names ,eg. 'Sunday',can be overridden by custom `options.weekdays`   |
+| ww     | Abbreviation of English week name, eg. 'Sun' ,can be overridden by custom `options.weekdays`           |
 
 - **returns**:(String) formated string
 
-#### formate.format(format?:String, date?:Date|Timestamp = new Date(),options?:{months?:String[],weeks?:String[]}={}):String
+#### formate.format(format?:String, date?:Date|Timestamp = new Date(),options?:{months?:String[],weekdays?:String[]}={}):String
 
 - **description** : The alias of [formate](#formate) above.
 
@@ -255,7 +244,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 
   For example, in '+3year4month', '+' is called operator, 'year' and 'month' are valid tokens, and their combination represents a certain meaning.
 
-supported operators are: `+(add)` ,`-(sub)`
+supported operators are: `+` ,`-`;
 
 supported tokens are: `year(s)`, `month(s)`, `day(s)`, `week(s)` ,`hour(s)`, `minute(s)`, `second(s)` ,`millisecond(s)`, `now` ,`lastweek` ,`lastyear`, `lastmonth` ,`yestoday`, `tomorrow`, `today`;
 
@@ -269,7 +258,7 @@ supported tokens are: `year(s)`, `month(s)`, `day(s)`, `week(s)` ,`hour(s)`, `mi
 
 - **description** : Calculates the specified date relative to the current time and return the corresponding string
 - **params** :  
-   `date`: Date|timestamp
+   `date`: (Date|timestamp)
 
 #### formate.isBetween(target:Date|timestamp, start:Date|timestamp, end:Date|timestamp):Boolean
 
@@ -284,6 +273,6 @@ supported tokens are: `year(s)`, `month(s)`, `day(s)`, `week(s)` ,`hour(s)`, `mi
 
 - **returns**:(Boolean) Returns `true` if the specified date is in the range, `false` otherwise
 
-# <span id="parsestr">Parsing strings to Date</span>
+# Parsing strings to Date
 
 Considering that parsing date format strings into date objects is only a small requirement and easy to implement,the date-fm library does **not support** this function, but if you're looking for anything more sophisticated than that you should probably look for a better library ([momentjs](https://momentjs.com) does pretty much everything).

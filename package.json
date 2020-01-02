@@ -1,7 +1,7 @@
 {
   "name": "date-fm",
-  "version": "1.1.2",
-  "description": "Modern JavaScript date formatting library,support browser and nodejs",
+  "version": "1.2.0",
+  "description": "Date formatting library,supports browser and nodejs",
   "main": "dist/date-fm.js",
   "private": false,
   "scripts": {
@@ -18,12 +18,18 @@
   },
   "keywords": [
     "date",
-    "date-f",
     "date-fm",
     "date-fn",
+    "date-utils",
     "date-format",
-    "format-date"
+    "format-date",
+    "datefm",
+    "datetime",
+    "time"
   ],
+   "engines": {
+    "node": ">6"
+  },
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.7.7",

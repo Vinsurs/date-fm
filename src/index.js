@@ -74,8 +74,8 @@ const daysFull = [
         `ww`    eg.   'Sun'
 ;
 @param  date {Date|Number} Date Object or timestamp,default to current time
-@param  options {Object} Optional,custom month and week configuration objects
-@param  options.weeks {Array} Array of custom weeks
+@param  options {Object} Optional,custom month and weekday configuration objects
+@param  options.weekdays {Array} Array of custom weekdays
 @param  options.months {Array} Array of custom months
     
 @returns {String} A date string in the specified format
@@ -98,8 +98,8 @@ function formate(
   if (options.months && !(options.months instanceof Array)) {
     throw new TypeError(`the parameter 'option.months' must be an array`);
   }
-  if (options.weeks && !(options.weeks instanceof Array)) {
-    throw new TypeError(`the parameter 'option.weeks' must be an array`);
+  if (options.weekdays && !(options.weekdays instanceof Array)) {
+    throw new TypeError(`the parameter 'option.weekdays' must be an array`);
   }
   date = new Date(date);
   let matchers = [
@@ -188,14 +188,14 @@ function formate(
     },
     {
       test: /W{2}/,
-      replace: options.weeks
-        ? options.weeks[date.getDay()]
+      replace: options.weekdays
+        ? options.weekdays[date.getDay()]
         : daysFull[date.getDay()]
     },
     {
       test: /w{2}/,
-      replace: options.weeks
-        ? options.weeks[date.getDay()]
+      replace: options.weekdays
+        ? options.weekdays[date.getDay()]
         : daysAbbr[date.getDay()]
     }
   ];
