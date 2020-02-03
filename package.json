@@ -1,6 +1,6 @@
 {
   "name": "date-fm",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Date formatting library,supports browser and nodejs",
   "main": "dist/date-fm.js",
   "private": false,
@@ -18,16 +18,16 @@
   },
   "keywords": [
     "date",
+    "datefm",
     "date-fm",
-    "date-fn",
-    "date-utils",
     "date-format",
     "format-date",
-    "datefm",
+    "date-fn",
+    "date-utils",
     "datetime",
     "time"
   ],
-   "engines": {
+  "engines": {
     "node": ">6"
   },
   "license": "ISC",

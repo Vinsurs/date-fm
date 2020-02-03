@@ -82,7 +82,7 @@ const daysFull = [
 
 */
 function formate(
-  format = "YYYY-MM-DD HH:II:SS",
+  format = "YYYY/MM/DD HH:II:SS",
   date = new Date(),
   options = {}
 ) {
@@ -207,8 +207,12 @@ function formate(
 /**
  * @description The alias of `formate`
  */
-formate.format = function(format, date = new Date(), options = {}) {
-  return formate(format, date);
+formate.format = function(
+  format = "YYYY/MM/DD HH:II:SS",
+  date = new Date(),
+  options = {}
+) {
+  return formate(format, date, options);
 };
 /**
  * @description Decide if it's a leap year
@@ -285,7 +289,7 @@ formate.compare = function(target, comparator = new Date()) {
    @param format{String} optional,default to `YYYY-MM-DD HH:II:SS` 
    @returns {Date|String} If `format` is set to false, the parsed date object will be returned, otherwise the format string will be returned
  */
-formate.resolve = function(relative, format = "YYYY-MM-DD HH:II:SS") {
+formate.resolve = function(relative, format = "YYYY/MM/DD HH:II:SS") {
   relative = trim(relative);
   let now = new Date();
   let year = now.getFullYear();
@@ -296,7 +300,7 @@ formate.resolve = function(relative, format = "YYYY-MM-DD HH:II:SS") {
   let seconds = now.getSeconds();
   let ms = now.getMilliseconds();
   if (/^(\+)|-/.test(relative)) {
-    let reg = /((?<ayear>\d+)years?)?((?<amonth>\d+)months?)?((?<aweek>\d+)week)?((?<aday>\d+)days?)?((?<ahour>\d*)hours+)?((?<aminute>\d+)minutes?)?((?<asecond>\d+)seconds?)?((?<ams>\d+)milliseconds?)?/g;
+    let reg = /((?<ayear>\d+)years?)?((?<amonth>\d+)months?)?((?<aweek>\d+)weeks?)?((?<aday>\d+)days?)?((?<ahour>\d+)hours?)?((?<aminute>\d+)minutes?)?((?<asecond>\d+)seconds?)?((?<ams>\d+)milliseconds?)?/g;
     let { ayear, amonth, aweek, aday, ahour, aminute, asecond, ams } = reg.exec(
       relative.slice(1)
     ).groups;
@@ -341,7 +345,7 @@ formate.resolve = function(relative, format = "YYYY-MM-DD HH:II:SS") {
       case "lastmonth":
         month -= 1;
         break;
-      case "yestoday":
+      case "yesterday":
         date -= 1;
         hours = 0;
         minutes = 0;
@@ -400,7 +404,7 @@ formate.relative = function(date) {
   let diff_secs = Math.abs(diff_times) / 1000; //diff seconds
   let nDis = {
     num: 0, // Different Numbers
-    desc: "just now" // description to show
+    desc: "few seconds ago" // description to show
   }; //mark diff
   let year = Math.floor(diff_secs / (365 * 24 * 60 * 60));
   let month = Math.floor(diff_secs / (30 * 24 * 60 * 60));
