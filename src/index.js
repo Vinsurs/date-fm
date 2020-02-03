@@ -404,7 +404,7 @@ formate.relative = function(date) {
   let diff_secs = Math.abs(diff_times) / 1000; //diff seconds
   let nDis = {
     num: 0, // Different Numbers
-    desc: "few seconds ago" // description to show
+    desc: "a few seconds ago" // description to show
   }; //mark diff
   let year = Math.floor(diff_secs / (365 * 24 * 60 * 60));
   let month = Math.floor(diff_secs / (30 * 24 * 60 * 60));
