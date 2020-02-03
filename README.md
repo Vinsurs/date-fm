@@ -112,7 +112,7 @@ The easiest way to use it in a browser is to introduce script tags, this exposes
     <meta charset="UTF-8" />
   </head>
   <body>
-    <script src="./node_modules/dist/date-fm.js"></script>
+    <script src="/node_modules/date-fm/dist/date-fm.js"></script>
     <script>
       // window.dateFm is the date formator
       let date = window.dateFm.resolve("tomorrow", false); // return a native Date Object
