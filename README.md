@@ -1,4 +1,6 @@
-# date-fm
+![npm](https://nodei.co/npm/date-fm.png?downloads=true&downloadRank=true)
+
+# date-fm ![Build Status](https://secure.travis-ci.org/mongodb/node-mongodb-native.svg?branch=2.1) ![coverage status](https://img.shields.io/badge/coverage-100%25-brightgreen.svg?style=flat) ![NPM version](https://badge.fury.io/js/date-fm.svg)
 
 `date-fm` is a JavaScript library for date formatting,supports **browser** and **[node.js](https://nodejs.org/en)**.
 
@@ -29,53 +31,51 @@
 
 'date-fm' supports **Commonjs**, **AMD** and **Browser side**. You can use it according to different environments.
 
-### Commonjs
+### Using in Commonjs
 
-1.  Formate date
+#### Formate date
 
-    - The easiest way to use it is:
+- The easiest way to use it is:
 
-      ```js
-      const formate = require("date-fm");
-      console.log(formate()); // output is "2018/12/20 16:25:55",default to current date
-      // alias to `formate`
-      console.log(formate.format()); // output is "2018/12/20 16:25:55",default to current date
-      ```
+```js
+const formate = require("date-fm");
+console.log(formate()); // output is "2018/12/20 16:25:55",default to current date
+// alias to `formate`
+console.log(formate.format()); // output is "2018/12/20 16:25:55",default to current date
+```
 
-    - Customized use:
+- Customized use:
 
-      ```js
-      const formate = require("date-fm");
-      console.log(formate("YYYY-MM-DD HH:II:SS aa", new Date(2018, 12, 20))); // output is "2018-12-20 00:00:00 am"
-      console.log(formate("YY-mm-dd hh:ii:ss  WW")); // output is "19-12-25 23:23:59  Wednesday"
-      // Customize the display text for months and weekdays
-      console.log(
-        formate("YY/mm/dd hh:ii:ss NN WW", new Date(), {
-          months: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
-          ],
-          // Note : the first item in the array is Sunday!
-          weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-        })
-      ); // output is "19/12/25 23:23:59 Dec Wed"
-      // alias to `formate`
-      console.log(
-        formate.format("YYYY/MM/DD HH:II:SS aa", new Date(2018, 12, 20))
-      ); // output is "2018/12/20 00:00:00 am"
-      ```
+```js
+const formate = require("date-fm");
+console.log(formate("YYYY-MM-DD HH:II:SS aa", new Date(2018, 11, 20))); // output is "2018-12-20 00:00:00 am"
+console.log(formate("YY-mm-dd hh:ii:ss  WW")); // output is "19-12-25 23:23:59  Wednesday"
+// Customize the display text for months and weekdays
+console.log(
+  formate("YY/mm/dd hh:ii:ss NN WW", new Date(), {
+    months: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    // Note : the first item in the array is Sunday!
+    weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  })
+); // output is "19/12/25 23:23:59 Dec Wed"
+// alias to `formate`
+console.log(formate.format("YYYY/MM/DD HH:II:SS aa", new Date(2018, 11, 20))); // output is "2018/12/20 00:00:00 am"
+```
 
-2.  Resolve relative date
+#### Resolve relative date
 
 ```js
 const formate = require("date-fm");
@@ -88,7 +88,7 @@ let timestamp = Date.now();
 console.log(formate.relative(timestamp)));// output is "2 minutes ago"
 ```
 
-3.  Compare date
+#### Compare date
 
 ```js
 const formate = require("date-fm");
@@ -101,7 +101,7 @@ console.log(
 ); // output is "false"
 ```
 
-### Browser
+### Using in Browser
 
 The easiest way to use it in a browser is to introduce script tags, this exposes a `dateFm` object globally:
 
@@ -261,6 +261,7 @@ supported tokens are: `year(s)`, `month(s)`, `week(s)` ,`day(s)`, `hour(s)`, `mi
 - **description** : Calculates the specified date relative to the current time and return the corresponding string
 - **params** :  
    `date`: (Date|timestamp)
+- **returns** (String) relative string
 
 ### formate.isBetween(target:Date|timestamp, start:Date|timestamp, end:Date|timestamp):Boolean
 

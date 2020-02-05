@@ -286,7 +286,7 @@ formate.compare = function(target, comparator = new Date()) {
  * @param relative {String}  The relative date ,eg. `+3year4month`,then:
             oparator:    +(add)      -(sub)
             supportedToken: `year`  `month`  `week` `day` `hour` `minute` `second` `millisecond` `lastyear` `lastmonth` `lastweek` `yestoday` `today` `tomorrow` `now` 
-   @param format{String} optional,default to `YYYY-MM-DD HH:II:SS` 
+   @param format{String|false} optional,default to `YYYY-MM-DD HH:II:SS` 
    @returns {Date|String} If `format` is set to false, the parsed date object will be returned, otherwise the format string will be returned
  */
 formate.resolve = function(relative, format = "YYYY/MM/DD HH:II:SS") {
@@ -384,14 +384,12 @@ formate.resolve = function(relative, format = "YYYY/MM/DD HH:II:SS") {
  * @returns {String} A string relative to the current time
  */
 formate.relative = function(date) {
-  if (
-    "number" !== typeof date &&
-    "number" !== typeof Number(date) &&
-    !date instanceof Date
-  ) {
-    throw new TypeError(
-      `Cannot resolve 'date' parameter,The parameter 'date' must be either a date object or a timestamp that represents date`
-    );
+  if (!(date instanceof Date)) {
+    if ("number" !== typeof date && isNaN(Number(date))) {
+      throw new TypeError(
+        `Cannot resolve 'date' parameter,The parameter 'date' must be either a date object or a timestamp that represents date`
+      );
+    }
   }
   let result = ""; //result return value
   let is_before = true; //ago

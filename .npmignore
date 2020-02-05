@@ -1,7 +1,6 @@
 .*
 /node_modules
-/src
+/example
 package-lock.json
 webpack.config.js
 /test
-/libs
