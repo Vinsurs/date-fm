@@ -1,16 +1,24 @@
-const formate = require("../dist/date-fm");
+const {
+  format,
+  resolve,
+  relative,
+  isBefore,
+  isLeapYear,
+  compare,
+  isBetween,
+} = require('../dist/index');
 // const formate = require("../src/index");
-console.log(formate.resolve("tomorrow"));
-console.log(formate.resolve("lastweek"));
-console.log(formate.relative(new Date()));
-console.log(formate.isBefore(new Date(2017, 8, 24)));
+console.log(resolve('tomorrow'));
+console.log(resolve('lastweek'));
+console.log(relative(new Date()));
+console.log(isBefore(new Date(2017, 8, 24)));
 console.log(
-  formate.isBetween(1577286966411, new Date(2016, 8, 24), new Date(2018, 8, 24))
+  isBetween(1577286966411, new Date(2016, 8, 24), new Date(2018, 8, 24)),
 );
-console.log(formate.isLeapYear(2082));
-console.log(formate.compare(new Date(2017, 8, 24), new Date(2018, 8, 24)));
+console.log(isLeapYear(2082));
+console.log(compare(new Date(2017, 8, 24), new Date(2018, 8, 24)));
 console.log(
-  formate.format("YY/mm/dd hh:ii:ss NN WW", new Date(), {
-    months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
-  })
+  format('YY/mm/dd hh:ii:ss NN WW', new Date(), {
+    months: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  }),
 );

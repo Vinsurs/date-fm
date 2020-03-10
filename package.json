@@ -1,11 +1,11 @@
 {
   "name": "date-fm",
-  "version": "2.1.1",
-  "description": "Date formatting library,supports browser and nodejs",
+  "version": "3.0.0",
+  "description": "Date formatting library,supports ES6 module and nodejs",
   "main": "dist/date-fm.js",
   "private": false,
   "scripts": {
-    "build": "webpack",
+    "build": "tsc",
     "test": "mocha"
   },
   "author": "$vinsurs <2407232109@qq.com>",
@@ -29,16 +29,12 @@
     "time"
   ],
   "engines": {
-    "node": ">6"
+    "node": ">6",
+    "npm": ">3"
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/plugin-transform-named-capturing-groups-regex": "^7.7.4",
-    "@babel/preset-env": "^7.7.7",
-    "babel-loader": "^8.0.6",
     "mocha": "^7.0.1",
-    "webpack": "^4.41.4",
-    "webpack-cli": "^3.3.10"
+    "typescript": "^3.8.3"
   }
 }

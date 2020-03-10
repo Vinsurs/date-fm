@@ -2,11 +2,11 @@
 
 # date-fm ![Build Status](https://secure.travis-ci.org/mongodb/node-mongodb-native.svg?branch=2.1) ![coverage status](https://img.shields.io/badge/coverage-100%25-brightgreen.svg?style=flat) ![NPM version](https://badge.fury.io/js/date-fm.svg)
 
-`date-fm` is a JavaScript library for date formatting,supports **browser** and **[node.js](https://nodejs.org/en)**.
+`date-fm` is a JavaScript library for date formatting,supports **ES6 Module** and **[node.js](https://nodejs.org/en)**.
 
 # Features
 
-- Support both **browser** environment and **[node.js](https://nodejs.org/en)** environment.
+- Support both **ES6 Module** environment and **[node.js](https://nodejs.org/en)** environment.
 - Resolve to the corresponding date expression string or date object according to the format string.
 - Support calculation of relative date.
 - Support for custom week and month strings.
@@ -29,8 +29,6 @@
 
 # Usage
 
-'date-fm' supports **Commonjs**, **AMD** and **Browser side**. You can use it according to different environments.
-
 ### Using in Commonjs
 
 #### Formate date
@@ -38,118 +36,116 @@
 - The easiest way to use it is:
 
 ```js
-const formate = require("date-fm");
-console.log(formate()); // output is "2018/12/20 16:25:55",default to current date
-// alias to `formate`
-console.log(formate.format()); // output is "2018/12/20 16:25:55",default to current date
+const { format } = require('date-fm');
+console.log(format()); // output is "2018-12-20 16:25:55",default to current date
 ```
 
 - Customized use:
 
 ```js
-const formate = require("date-fm");
-console.log(formate("YYYY-MM-DD HH:II:SS aa", new Date(2018, 11, 20))); // output is "2018-12-20 00:00:00 am"
-console.log(formate("YY-mm-dd hh:ii:ss  WW")); // output is "19-12-25 23:23:59  Wednesday"
-// Customize the display text for months and weekdays
+const { format } = require('date-fm');
+console.log(format('YYYY/MM/DD HH:II:SS aa', new Date(2018, 11, 20))); // output is "2018/12/20 00:00:00 am"
+console.log(format('YY-mm-dd hh:ii:ss  WW')); // output is "19-12-25 23:23:59  Wednesday"
+// locale config
 console.log(
-  formate("YY/mm/dd hh:ii:ss NN WW", new Date(), {
+  format('YY/mm/dd hh:ii:ss NN WW', new Date(), {
     months: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec"
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ],
     // Note : the first item in the array is Sunday!
-    weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-  })
+    weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  }),
 ); // output is "19/12/25 23:23:59 Dec Wed"
-// alias to `formate`
-console.log(formate.format("YYYY/MM/DD HH:II:SS aa", new Date(2018, 11, 20))); // output is "2018/12/20 00:00:00 am"
 ```
 
 #### Resolve relative date
 
 ```js
-const formate = require("date-fm");
-console.log(formate.resolve("+3days4hours")); // output is "2019-12-20 20:25:55"
-console.log(formate.resolve("-3years2weeks","YYYY/MM/DD HH:II:SS aa")); // output is "2016/12/20 16:25:55 pm"
-console.log(formate.resolve("lastweek")); // output is "2019-12-13 16:25:55"
-let date= formate.resolve("yesterday",false); // return a native Date Object
-console.log(formate.relative(new Date(2017, 8, 24)));// output is "2 years ago"
+const {resolve,relative} = require("date-fm");
+console.log(resolve("+3days4hours")); // output is "2019-12-20 20:25:55"
+console.log(resolve("-3years2weeks","YYYY/MM/DD HH:II:SS aa")); // output is "2016/12/20 16:25:55 pm"
+console.log(resolve("lastweek")); // output is "2019-12-13 16:25:55"
+let date= resolve("yesterday",false); // return a native Date Object
+console.log(relative(new Date(2017, 8, 24)));// output is "2 years ago"
 let timestamp = Date.now();
-console.log(formate.relative(timestamp)));// output is "2 minutes ago"
+console.log(relative(timestamp)));// output is "2 minutes ago"
 ```
 
 #### Compare date
 
 ```js
-const formate = require("date-fm");
-console.log(formate.isBefore(new Date(2017, 8, 24))); // output is "true"
-console.log(formate.isAfter(new Date(2017, 8, 24), new Date())); // output is "false"
-console.log(formate.isLeapYear(2082)); // output is "false"
-console.log(formate.compare(new Date(2017, 8, 24), new Date(2018, 8, 24))); // output is "-1"
+const {
+  isBefore,
+  isAfter,
+  isLeapYear,
+  compare,
+  isBetween,
+} = require('date-fm');
+console.log(isBefore(new Date(2017, 8, 24))); // output is "true"
+console.log(isAfter(new Date(2017, 8, 24), new Date())); // output is "false"
+console.log(isLeapYear(2082)); // output is "false"
+console.log(compare(new Date(2017, 8, 24), new Date(2018, 8, 24))); // output is "-1"
 console.log(
-  formate.isBetween(1577286966411, new Date(2016, 8, 24), new Date(2018, 8, 24))
+  isBetween(1577286966411, new Date(2016, 8, 24), new Date(2018, 8, 24)),
 ); // output is "false"
 ```
 
-### Using in Browser
-
-The easiest way to use it in a browser is to introduce script tags, this exposes a `dateFm` object globally:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-  </head>
-  <body>
-    <script src="/node_modules/date-fm/dist/date-fm.js"></script>
-    <script>
-      // window.dateFm is the date formator
-      let date = window.dateFm.resolve("tomorrow", false); // return a native Date Object
-      // date.getFullYear();
-      // todo...
-    </script>
-  </body>
-</html>
-```
-
-### Other
+### Using in ES6 Module
 
 If you want to use `date-fm` in other packaging based engineering projects, it's very simple. Just import it and use it
 
 ```js
-import formate from "date-fm";
-let sDate = formate.format();
+import { format } from 'date-fm';
+let sDate = format();
 // ...
 ```
 
 # Api
 
-Let's call the date format object exposed by [date-fm](https://www.npmjs.com/package/date-fm) `formate`:
-
 ```js
-const formate = require("date-fm");
+const {
+  compare,
+  format,
+  isAfter,
+  isBefore,
+  isBetween,
+  isEqual,
+  isLeapYear,
+  relative,
+  resolve,
+} = require('date-fm');
 // or
-import formate from "date-fm";
+import {
+  compare,
+  format,
+  isAfter,
+  isBefore,
+  isBetween,
+  isEqual,
+  isLeapYear,
+  relative,
+  resolve,
+} from 'date-fm';
 ```
 
 and then
 
-### <span id= "formate">formate(format?:String, time?:Date|Timestamp = new Date(),options?:{months?:String[],weekdays?:String[]}={}):String</span>
+### <span id= "formate">format(format?:String, time?:Date|Timestamp = new Date(),options?:{months?:String[],weekdays?:String[]}={}):String</span>
 
 - **description** : Returns the corresponding format string according to the specified date format;
 - **params** :  
-   `format`:(String) format string,default to 'YYYY/MM/DD HH:II:SS'. see the following table for the [supported format symbols](#format).
+   `format`:(String) format string,default to 'YYYY-MM-DD HH:II:SS'. see the following table for the [supported format symbols](#format).
 
   `time` :(Date|Number) Date object or timestamp to format,default to current time.
 
@@ -189,18 +185,14 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns**:(String) formated string
 
-### formate.format(format?:String, date?:Date|Timestamp = new Date(),options?:{months?:String[],weekdays?:String[]}={}):String
-
-- **description** : The alias of [formate](#formate) above.
-
-### formate.isLeapYear(year:Number|String|Date)
+### isLeapYear(year:Number|String|Date)
 
 - **description** : Decide if it's a leap year
 - **params** :  
   `year`:(Number|String|Date)Accept a date object , a number representing the year or a string representing the year can be converted to Number
 - **returns**:(Boolean) Return `true` if leap year, `false` otherwise
 
-### formate.isBefore(target:Date, comparator?:Date = new Date()):Boolean
+### isBefore(target:Date, comparator?:Date = new Date()):Boolean
 
 - **description** : Determine whether target precedes comparator
 - **params** :  
@@ -210,7 +202,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns** (Boolean) If target returns `true` before comparator, `false` otherwise
 
-### formate.isAfter(target:Date, comparator?:Date = new Date()):Boolean
+### isAfter(target:Date, comparator?:Date = new Date()):Boolean
 
 - **description** : Determine whether target follows comparator
 - **params** :  
@@ -220,7 +212,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns** :(Boolean) If target returns `true` after comparator, `false` otherwise
 
-### formate.isEqual(target:Date, comparator?:Date = new Date()):Boolean
+### isEqual(target:Date, comparator?:Date = new Date()):Boolean
 
 - **description** : Determine if two dates are equal
 - **params** :  
@@ -228,7 +220,7 @@ The following table is <span id="format">**supported format symbols:**</span>
   `comparator` : (Date) Date to be compared;default to current time
 - **returns** :(Boolean) Return true if it is the same date, otherwise return false
 
-### formate.compare(target:Date, comparator?:Date = new Date()):Number
+### compare(target:Date, comparator?:Date = new Date()):Number
 
 - **description** : Compare two dates.
 - **params** :  
@@ -238,7 +230,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns**:(Boolean) If target is larger than comparator, return 1, equal return 0, otherwise return - 1
 
-### formate.resolve(relative:String, format?:String|false = "YYYY/MM/DD HH:II:SS"):Date|String
+### resolve(relative:String, format?:String|false = "YYYY/MM/DD HH:II:SS"):Date|String
 
 - **description** : Resolve relative date
 - **params** :
@@ -256,14 +248,14 @@ supported tokens are: `year(s)`, `month(s)`, `week(s)` ,`day(s)`, `hour(s)`, `mi
 
 - **returns**: (Date|String) If `format` is set to `false`, it will return a parsed date object, otherwise it will return the format string of the parsed object!
 
-### formate.relative(date:Date|timestamp):String
+### relative(date:Date|timestamp):String
 
 - **description** : Calculates the specified date relative to the current time and return the corresponding string
 - **params** :  
    `date`: (Date|timestamp)
 - **returns** (String) relative string
 
-### formate.isBetween(target:Date|timestamp, start:Date|timestamp, end:Date|timestamp):Boolean
+### isBetween(target:Date|timestamp, start:Date|timestamp, end:Date|timestamp):Boolean
 
 - **description** Judge whether the date is within the specified range
 - **params**:
@@ -276,6 +268,6 @@ supported tokens are: `year(s)`, `month(s)`, `week(s)` ,`day(s)`, `hour(s)`, `mi
 
 - **returns**:(Boolean) Returns `true` if the specified date is in the range, `false` otherwise
 
-# Parsing strings to Date
+# License
 
-Considering that parsing date format strings into date objects is only a small requirement and easy to implement,the date-fm library does **not support** this function, but if you're looking for anything more sophisticated than that you should probably look for a better library ([momentjs](https://momentjs.com) does pretty much everything).
+[MIT](https://mitlicense.org)
