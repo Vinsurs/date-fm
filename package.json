@@ -1,8 +1,9 @@
 {
   "name": "date-fm",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Date formatting library,supports ES6 module and nodejs",
-  "main": "dist/date-fm.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "private": false,
   "scripts": {
     "build": "tsc",
