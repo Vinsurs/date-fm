@@ -6,7 +6,7 @@ const {
   isLeapYear,
   compare,
   isBetween,
-} = require('../dist/index');
+} = require('../dist/date-fm.min.js');
 // const formate = require("../src/index");
 console.log(resolve('tomorrow'));
 console.log(resolve('lastweek'));

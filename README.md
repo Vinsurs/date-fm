@@ -2,11 +2,11 @@
 
 # date-fm ![Build Status](https://secure.travis-ci.org/mongodb/node-mongodb-native.svg?branch=2.1) ![coverage status](https://img.shields.io/badge/coverage-100%25-brightgreen.svg?style=flat) ![NPM version](https://badge.fury.io/js/date-fm.svg)
 
-`date-fm` is a JavaScript library for date formatting,supports **ES6 Module** and **[node.js](https://nodejs.org/en)**.
+`date-fm` is a JavaScript library for date formatting,supports **Browser** and **[node.js](https://nodejs.org/en)**.
 
 # Features
 
-- Support both **ES6 Module** environment and **[node.js](https://nodejs.org/en)** environment.
+- Support both **Browser** environment and **[node.js](https://nodejs.org/en)** environment.
 - Resolve to the corresponding date expression string or date object according to the format string.
 - Support calculation of relative date.
 - Support for custom week and month strings.
@@ -15,13 +15,13 @@
 
 # Install
 
-`npm`:
+with `npm`:
 
 ```js
  npm install date-fm --save
 ```
 
-`yarn`:
+with `yarn`:
 
 ```js
  yarn add date-fm
@@ -109,6 +109,26 @@ If you want to use `date-fm` in other packaging based engineering projects, it's
 import { format } from 'date-fm';
 let sDate = format();
 // ...
+```
+
+### Using in Browser
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./node_modules/date-fm/dist/date-fm.min.js"></script>
+    <script>
+      let format = dateFm.format(new Date(2015, 4, 20));
+      // ...
+    </script>
+  </body>
+</html>
 ```
 
 # Api
@@ -267,7 +287,3 @@ supported tokens are: `year(s)`, `month(s)`, `week(s)` ,`day(s)`, `hour(s)`, `mi
   `end`:(Date|Number) End of date range
 
 - **returns**:(Boolean) Returns `true` if the specified date is in the range, `false` otherwise
-
-# License
-
-[MIT](https://mitlicense.org)

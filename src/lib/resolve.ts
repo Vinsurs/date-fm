@@ -9,18 +9,7 @@ import formate from './format';
             supportedToken: `year`  `month`  `week` `day` `hour` `minute` `second` `millisecond` `lastyear` `lastmonth` `lastweek` `yesterday` `today` `tomorrow` `now` 
    @param {String|false} format optional,default to `YYYY-MM-DD HH:II:SS` 
    @returns {Date|String} If `format` is set to false, the parsed date object will be returned, otherwise the format string will be returned
- */
-type groups = string | number | undefined;
-interface ExecGroup {
-  ayear: groups;
-  amonth: groups;
-  aweek: groups;
-  aday: groups;
-  ahour: groups;
-  aminute: groups;
-  asecond: groups;
-  ams: groups;
-}
+//  */
 export default function resolve(
   relative: string,
   format: string | false = 'YYYY-MM-DD HH:II:SS',
@@ -35,32 +24,21 @@ export default function resolve(
   let seconds = now.getSeconds();
   let ms = now.getMilliseconds();
   if (/^(\+)|-/.test(relative)) {
-    let reg: RegExp = /((?<ayear>\d+)years?)?((?<amonth>\d+)months?)?((?<aweek>\d+)weeks?)?((?<aday>\d+)days?)?((?<ahour>\d+)hours?)?((?<aminute>\d+)minutes?)?((?<asecond>\d+)seconds?)?((?<ams>\d+)milliseconds?)?/g;
+    let reg: RegExp = /((\d+)years?)?((\d+)months?)?((\d+)weeks?)?((\d+)days?)?((\d+)hours?)?((\d+)minutes?)?((\d+)seconds?)?((\d+)milliseconds?)?/g;
     let regExpExecArray = reg.exec(relative.slice(1));
     if (regExpExecArray == null) {
       throw TypeError(
         `Parsing error, please make sure your relative parameter format is correct!`,
       );
     }
-    let {
-      ayear,
-      amonth,
-      aweek,
-      aday,
-      ahour,
-      aminute,
-      asecond,
-      ams,
-    }: ExecGroup = <ExecGroup>regExpExecArray.groups;
-
-    ayear = normalize(ayear);
-    amonth = normalize(amonth);
-    aweek = normalize(aweek);
-    aday = normalize(aday);
-    ahour = normalize(ahour);
-    aminute = normalize(aminute);
-    asecond = normalize(asecond);
-    ams = normalize(ams);
+    let ayear = normalize(regExpExecArray[2]),
+      amonth = normalize(regExpExecArray[4]),
+      aweek = normalize(regExpExecArray[6]),
+      aday = normalize(regExpExecArray[8]),
+      ahour = normalize(regExpExecArray[10]),
+      aminute = normalize(regExpExecArray[12]),
+      asecond = normalize(regExpExecArray[14]),
+      ams = normalize(regExpExecArray[16]);
 
     if (startsWith(relative, '+')) {
       year += ayear;

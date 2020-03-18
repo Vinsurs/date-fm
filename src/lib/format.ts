@@ -2,56 +2,17 @@ import padWithZero from './padWithZero';
 import isLeapYear from './isLeapYear';
 
 // constants
-const monthsAbbr: Array<string> = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
+import daysAbbr from '../constants/daysAbbr';
+import daysFull from '../constants/daysFull';
+import monthsAbbr from '../constants/monthsAbbr';
+import monthsFull from '../constants/monthsFull';
 
-const monthsFull: Array<string> = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
-const daysAbbr: Array<string> = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
-];
-
-const daysFull: Array<string> = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
-
+// interface
+interface DefaultOptions {
+  format: string;
+  date: Date | number;
+  options: FormatOptions;
+}
 interface FormatOptions {
   weekdays?: string[];
   months?: string[];
@@ -60,28 +21,6 @@ interface Matcher {
   test: RegExp;
   replace: number | string;
 }
-interface DefaultOptions {
-  format: string;
-  date: Date | number;
-  options: FormatOptions;
-}
-// no params
-function formate(): string;
-// one params
-function formate(format: string): string;
-function formate(date: Date | number): string;
-function formate(options: FormatOptions): string;
-// two params
-function formate(format: string, date: Date | number): string;
-function formate(format: string, options: FormatOptions): string;
-function formate(date: Date | number, options: FormatOptions): string;
-// three params
-function formate(
-  format: string,
-  date: Date | number,
-  options: FormatOptions,
-): string;
-// implementation
 /**
   @description    formate date to assigned format
   @param  {String} format formatting tokens ,default to `YYYY-MM-DD HH:II:SS`; all supported date formate token:
@@ -115,6 +54,22 @@ function formate(
   @returns {String} A date string in the specified format
   
   */
+function formate(): string;
+
+function formate(format: string): string;
+function formate(date: Date | number): string;
+function formate(options: FormatOptions): string;
+
+function formate(format: string, date: Date | number): string;
+function formate(format: string, options: FormatOptions): string;
+function formate(date: Date | number, options: FormatOptions): string;
+
+function formate(
+  format: string,
+  date: Date | number,
+  options: FormatOptions,
+): string;
+
 function formate(...params: any[]): string {
   let defaultOptions: DefaultOptions = {
     format: 'YYYY-MM-DD HH:II:SS',

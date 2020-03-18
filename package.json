@@ -1,12 +1,16 @@
 {
   "name": "date-fm",
-  "version": "3.0.1",
-  "description": "Date formatting library,supports ES6 module and nodejs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "3.0.2",
+  "description": "Date formatting library,supports browser and nodejs",
+  "main": "dist/date-fm.min.js",
+  "types": "dist/lib/index.d.ts",
+  "files": [
+    "dist",
+    "example"
+  ],
   "private": false,
   "scripts": {
-    "build": "tsc",
+    "build": "webpack",
     "test": "mocha"
   },
   "author": "$vinsurs <2407232109@qq.com>",
@@ -30,12 +34,20 @@
     "time"
   ],
   "engines": {
-    "node": ">6",
-    "npm": ">3"
+    "node": ">10",
+    "npm": ">5"
   },
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^7.0.1",
-    "typescript": "^3.8.3"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.6",
+    "core-js": "^3.6.4",
+    "mocha": "^7.1.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
   }
 }

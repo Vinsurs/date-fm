@@ -1,8 +1,0 @@
-.*
-/node_modules
-/example
-package-lock.json
-webpack.config.js
-/test
-/src
-/libs
