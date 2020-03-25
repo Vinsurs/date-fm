@@ -16,6 +16,7 @@ interface DefaultOptions {
 interface FormatOptions {
   weekdays?: string[];
   months?: string[];
+  ampm?: string[];
 }
 interface Matcher {
   test: RegExp;
@@ -51,7 +52,7 @@ interface Matcher {
   @param   {Array} options.weekdays Array of custom weekdays
   @param   {Array} options.months Array of custom months
       
-  @returns {String} A date string in the specified format
+  @returns {string} A date string in the specified format
   
   */
 function formate(): string;
@@ -191,11 +192,25 @@ function formate(...params: any[]): string {
     },
     {
       test: /A{2}/,
-      replace: date.getHours() > 12 ? 'PM' : 'AM',
+      replace:
+        date.getHours() > 12
+          ? defaultOptions.options.ampm
+            ? defaultOptions.options.ampm[1]
+            : 'PM'
+          : defaultOptions.options.ampm
+          ? defaultOptions.options.ampm[0]
+          : 'AM',
     },
     {
       test: /a{2}/,
-      replace: date.getHours() > 12 ? 'pm' : 'am',
+      replace:
+        date.getHours() > 12
+          ? defaultOptions.options.ampm
+            ? defaultOptions.options.ampm[1]
+            : 'pm'
+          : defaultOptions.options.ampm
+          ? defaultOptions.options.ampm[0]
+          : 'am',
     },
     {
       test: /j{2}/,

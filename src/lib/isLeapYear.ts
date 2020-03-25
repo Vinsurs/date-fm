@@ -1,7 +1,7 @@
 /**
  * @description Decide if it's a leap year
- * @param {Number|Date} year number of year or date object
- * @returns {Boolean}
+ * @param {number|Date} year number of year or date object
+ * @returns {boolean}
  */
 import isDate from './isDate';
 export default function isLeapYear(year: Date | number): boolean {
@@ -11,7 +11,7 @@ export default function isLeapYear(year: Date | number): boolean {
     year = Number(year);
     if (isNaN(year)) {
       throw TypeError(
-        `The 'year' parameter should have accepted the Number and Date type, but type ${typeof year} was received`,
+        `The 'year' parameter should have accepted the number and Date type, but type ${typeof year} was received`,
       );
     }
   }

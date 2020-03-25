@@ -2,7 +2,7 @@
  * @description Determine whether target follows comparator
  * @param  {Date} target Date to compare
  * @param  {Date} comparator Date to be compared;default to current time
- * @returns {Boolean}
+ * @returns {boolean}
  */
 import isDate from './isDate';
 export default function isAfter(

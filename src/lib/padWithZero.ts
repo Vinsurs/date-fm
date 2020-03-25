@@ -1,7 +1,7 @@
 /**
  * @description pad num with zero
- * @param {Number} num
- * @returns {String} padded string
+ * @param {number} num
+ * @returns {string} padded string
  */
 
 export default function padWithZero(num: number): string {

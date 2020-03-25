@@ -1,7 +1,7 @@
 /**
  * @description Calculates the specified date relative to the current time
  * @param {Date|number} date  Date Object or timestamp
- * @returns {String} A string relative to the current time
+ * @returns {string} A string relative to the current time
  */
 export default function relative(date: Date | number): string {
   if (!(date instanceof Date)) {

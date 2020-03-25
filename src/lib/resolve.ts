@@ -4,16 +4,16 @@ import normalize from './normalize';
 import formate from './format';
 /**
  * @description compute relative date
- * @param  {String} relative The relative date ,eg. `+3year4month`,then:
+ * @param  {string} relative The relative date ,eg. `+3year4month`,then:
             oparator:    +(add)      -(sub)
             supportedToken: `year`  `month`  `week` `day` `hour` `minute` `second` `millisecond` `lastyear` `lastmonth` `lastweek` `yesterday` `today` `tomorrow` `now` 
-   @param {String|false} format optional,default to `YYYY-MM-DD HH:II:SS` 
-   @returns {Date|String} If `format` is set to false, the parsed date object will be returned, otherwise the format string will be returned
+   @param {string|false} format optional,default to `YYYY-MM-DD HH:II:SS` 
+   @returns {Date|string} If `format` is set to false, the parsed date object will be returned, otherwise the format string will be returned
 //  */
 export default function resolve(
   relative: string,
   format: string | false = 'YYYY-MM-DD HH:II:SS',
-) {
+): Date | string {
   relative = trim(relative);
   let now = new Date();
   let year = now.getFullYear();
@@ -24,7 +24,7 @@ export default function resolve(
   let seconds = now.getSeconds();
   let ms = now.getMilliseconds();
   if (/^(\+)|-/.test(relative)) {
-    let reg: RegExp = /((\d+)years?)?((\d+)months?)?((\d+)weeks?)?((\d+)days?)?((\d+)hours?)?((\d+)minutes?)?((\d+)seconds?)?((\d+)milliseconds?)?/g;
+    let reg: RegExp = /((\d+)(?:years?|y))?((\d+)(?:months?|m))?((\d+)(?:weeks?|w))?((\d+)(?:days?|d))?((\d+)(?:hours?|h))?((\d+)(?:minutes?|i))?((\d+)(?:seconds?|s))?((\d+)(?:milliseconds?|ms))?/g;
     let regExpExecArray = reg.exec(relative.slice(1));
     if (regExpExecArray == null) {
       throw TypeError(
@@ -92,6 +92,10 @@ export default function resolve(
         seconds = 0;
         ms = 0;
         break;
+      default:
+        throw new SyntaxError(
+          `unkown token string ${relative} for parameter 'relative'`,
+        );
     }
   }
   let computedDate = new Date(year, month, date, hours, minutes, seconds, ms);

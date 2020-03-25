@@ -1,6 +1,6 @@
 /**
  * @description strip space in string
- * @param str {String}
+ * @param {string} str  string to be trimed
  * @returns  {string} String with leading and trailing spaces removed
  */
 export default function trim(str: string): string {
