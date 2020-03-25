@@ -24,7 +24,7 @@ export default function resolve(
   let seconds = now.getSeconds();
   let ms = now.getMilliseconds();
   if (/^(\+)|-/.test(relative)) {
-    let reg: RegExp = /((\d+)(?:years?|y))?((\d+)(?:months?|m))?((\d+)(?:weeks?|w))?((\d+)(?:days?|d))?((\d+)(?:hours?|h))?((\d+)(?:minutes?|i))?((\d+)(?:seconds?|s))?((\d+)(?:milliseconds?|ms))?/g;
+    let reg: RegExp = /((\d+)(?:years?|y))?((\d+)(?:months?|m))?((\d+)(?:weeks?|w))?((\d+)(?:days?|d))?((\d+)(?:hours?|h))?((\d+)(?:minutes?|i))?((\d+)(?:seconds?|s))?((\d+)(?:milliseconds?|MS))?/g;
     let regExpExecArray = reg.exec(relative.slice(1));
     if (regExpExecArray == null) {
       throw TypeError(

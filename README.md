@@ -257,7 +257,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 supported operators are: `+` ,`-`;
 
 supported tokens are: `year(s)`, `month(s)`, `week(s)` ,`day(s)`, `hour(s)`, `minute(s)`, `second(s)` ,`millisecond(s)`, `now` ,`lastweek` ,`lastyear`, `lastmonth` ,`yesterday`, `tomorrow`, `today`;
-abbreviations:`year(s)`->`y`, `month(s)`->`m`, `week(s)`->`w` ,`day(s)`->`d`, `hour(s)`->`h`, `minute(s)`->`i`, `second(s)`->`s` ,`millisecond(s)`->`ms`,so the following is equivalent:
+abbreviations:`year(s)`->`y`, `month(s)`->`m`, `week(s)`->`w` ,`day(s)`->`d`, `hour(s)`->`h`, `minute(s)`->`i`, `second(s)`->`s` ,`millisecond(s)`->`MS`,so the following is equivalent:
 
 ```js
 resolve('+3days4hours');
