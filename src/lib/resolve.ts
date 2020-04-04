@@ -7,15 +7,48 @@ import formate from './format';
  * @param  {string} relative The relative date ,eg. `+3year4month`,then:
             oparator:    +(add)      -(sub)
             supportedToken: `year`  `month`  `week` `day` `hour` `minute` `second` `millisecond` `lastyear` `lastmonth` `lastweek` `yesterday` `today` `tomorrow` `now` 
+   @param {Date|number} baseDate base date or base timestamp
    @param {string|false} format optional,default to `YYYY-MM-DD HH:II:SS` 
    @returns {Date|string} If `format` is set to false, the parsed date object will be returned, otherwise the format string will be returned
 //  */
-export default function resolve(
+function resolve(relative: string): Date | string;
+function resolve(relative: string, baseDate: Date | number): Date | string;
+function resolve(relative: string, format: string | false): Date | string;
+function resolve(
   relative: string,
-  format: string | false = 'YYYY-MM-DD HH:II:SS',
-): Date | string {
+  baseDate: Date | number,
+  format: string | false,
+): Date | string;
+function resolve(relative: string, ...rest: any[]): Date | string {
+  let defaultRest = {
+    baseDate: new Date(),
+    format: 'YYYY-MM-DD HH:II:SS',
+  };
+  let shouldReturnDate: boolean = false;
+  if (rest.length === 1) {
+    if ('number' === typeof rest[0] || rest[0] instanceof Date) {
+      defaultRest.baseDate = new Date(rest[0]);
+    } else if ('string' === typeof rest[0]) {
+      defaultRest.format = rest[0];
+    } else if (false === rest[0]) {
+      shouldReturnDate = true;
+    } else {
+      throw new TypeError(`invalid parameter type`);
+    }
+  } else if (rest.length === 2) {
+    if ('number' !== typeof rest[0] && !(rest[0] instanceof Date)) {
+      throw new TypeError(
+        `the type of parameter 'baseDate' is either Date or number timestamp,but ${typeof rest[0]} is accepted!`,
+      );
+    } else if ('string' !== typeof rest[1] && false !== rest[1]) {
+      throw new TypeError(
+        `the type of parameter 'format' is either string or false,but ${typeof rest[1]} is accepted!`,
+      );
+    }
+  }
+
   relative = trim(relative);
-  let now = new Date();
+  let now = defaultRest.baseDate;
   let year = now.getFullYear();
   let month = now.getMonth();
   let date = now.getDate();
@@ -99,13 +132,10 @@ export default function resolve(
     }
   }
   let computedDate = new Date(year, month, date, hours, minutes, seconds, ms);
-  if (format === false) {
+  if (shouldReturnDate) {
     return computedDate;
-  } else if (typeof format === 'string') {
-    return formate(format, computedDate);
   } else {
-    throw new TypeError(
-      `The 'format' value must be false or a valid format string `,
-    );
+    return formate(defaultRest.format, computedDate);
   }
 }
+export default resolve;

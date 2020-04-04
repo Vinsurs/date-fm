@@ -6,22 +6,48 @@ import daysAbbr from '../constants/daysAbbr';
 import daysFull from '../constants/daysFull';
 import monthsAbbr from '../constants/monthsAbbr';
 import monthsFull from '../constants/monthsFull';
+import padForMS from './padForMS';
 
 // interface
 interface DefaultOptions {
   format: string;
   date: Date | number;
-  options: FormatOptions;
+  options: LocaleOptions;
 }
-interface FormatOptions {
+interface LocaleOptions {
   weekdays?: string[];
+  weekdaysAbbr?: string[];
   months?: string[];
-  ampm?: string[];
+  monthsAbbr?: string[];
+  ampm?: [string, string];
+  isPm?: (hour: number) => boolean;
 }
 interface Matcher {
   test: RegExp;
   replace: number | string;
 }
+// default localeOptions
+let defaultLocaleOptions: LocaleOptions = {
+  weekdays: daysFull,
+  weekdaysAbbr: daysAbbr,
+  months: monthsFull,
+  monthsAbbr: monthsAbbr,
+  isPm: hour => {
+    return hour > 12;
+  },
+};
+/**
+ * @description set global locale options for format function
+ * @param {Locale} localeOptions locale options
+ */
+format.setOptions = function(localeOptions: LocaleOptions): void {
+  localeOptions.isPm =
+    localeOptions.isPm ||
+    function(hour) {
+      return hour > 12;
+    };
+  defaultLocaleOptions = Object.assign({}, defaultLocaleOptions, localeOptions);
+};
 /**
   @description    formate date to assigned format
   @param  {String} format formatting tokens ,default to `YYYY-MM-DD HH:II:SS`; all supported date formate token:
@@ -39,43 +65,44 @@ interface Matcher {
           `ii`   eg.   8,
           `SS`   eg.   02,
           `ss`   eg.   2,
+          `XXX`  millisecond,
           `AA`    eg.   'AM',
           `aa`    eg.   'am',
           `jj`    eg.   365|366,
           `NN`    eg.   'December',
           `nn`    eg.   'Dec',
           `WW`    eg.   'Sunday',
-          `ww`    eg.   'Sun'
-  ;
+          `ww`    eg.   'Sun'  ;
   @param   {Date|number} date Date Object or timestamp,default to current time
-  @param   {Object} options Optional,custom month and weekday configuration objects
+  @param   {Object} options Optional,locale configuration objects
   @param   {Array} options.weekdays Array of custom weekdays
+  @param   {Array} options.weekdaysAbbr Array of custom weekdaysAbbr
   @param   {Array} options.months Array of custom months
-      
-  @returns {string} A date string in the specified format
-  
+  @param   {Array} options.monthsAbbr Array of custom monthsAbbr      
+  @param   {Array} options.ampm Array of custom ampm      
+  @returns {string} A date string in the specified format  
   */
-function formate(): string;
+function format(): string;
 
-function formate(format: string): string;
-function formate(date: Date | number): string;
-function formate(options: FormatOptions): string;
+function format(format: string): string;
+function format(date: Date | number): string;
+function format(options: LocaleOptions): string;
 
-function formate(format: string, date: Date | number): string;
-function formate(format: string, options: FormatOptions): string;
-function formate(date: Date | number, options: FormatOptions): string;
+function format(format: string, date: Date | number): string;
+function format(format: string, options: LocaleOptions): string;
+function format(date: Date | number, options: LocaleOptions): string;
 
-function formate(
+function format(
   format: string,
   date: Date | number,
-  options: FormatOptions,
+  options: LocaleOptions,
 ): string;
 
-function formate(...params: any[]): string {
+function format(...params: any[]): string {
   let defaultOptions: DefaultOptions = {
     format: 'YYYY-MM-DD HH:II:SS',
     date: new Date(),
-    options: {},
+    options: Object.assign({}, defaultLocaleOptions),
   };
   const args = params;
   if (args.length === 0) {
@@ -91,7 +118,11 @@ function formate(...params: any[]): string {
       defaultOptions.date = new Date(args[0]);
     } else {
       // options
-      defaultOptions.options = args[0];
+      defaultOptions.options = Object.assign(
+        {},
+        defaultOptions.options,
+        args[0],
+      );
     }
   }
   if (args.length === 2) {
@@ -103,7 +134,11 @@ function formate(...params: any[]): string {
         // timestamp
         defaultOptions.date = new Date(args[1]);
       } else {
-        defaultOptions.options = args[1];
+        defaultOptions.options = Object.assign(
+          {},
+          defaultOptions.options,
+          args[1],
+        );
       }
     } else {
       // date or timestamp
@@ -113,7 +148,11 @@ function formate(...params: any[]): string {
         // timestamp
         defaultOptions.date = new Date(args[0]);
       }
-      defaultOptions.options = args[1];
+      defaultOptions.options = Object.assign(
+        {},
+        defaultOptions.options,
+        args[1],
+      );
     }
   }
   if (args.length === 3) {
@@ -124,11 +163,21 @@ function formate(...params: any[]): string {
       // timestamp
       defaultOptions.date = new Date(args[1]);
     }
-    defaultOptions.options = args[2];
+    defaultOptions.options = Object.assign({}, defaultOptions.options, args[2]);
   }
-
+  // fallback
+  defaultOptions.options.isPm =
+    defaultOptions.options.isPm ||
+    function(hour) {
+      return hour > 12;
+    };
+  defaultOptions.options.months = defaultOptions.options.months || monthsFull;
+  defaultOptions.options.monthsAbbr =
+    defaultOptions.options.monthsAbbr || monthsAbbr;
+  defaultOptions.options.weekdays = defaultOptions.options.weekdays || daysFull;
+  defaultOptions.options.weekdaysAbbr =
+    defaultOptions.options.weekdaysAbbr || daysAbbr;
   // match
-  let { options, format } = defaultOptions;
   let date: Date = <Date>defaultOptions.date;
   let matchers: Array<Matcher> = [
     {
@@ -191,26 +240,28 @@ function formate(...params: any[]): string {
       replace: date.getSeconds(),
     },
     {
+      test: /XXX{2}/,
+      replace: padForMS(date.getMilliseconds()),
+    },
+    {
       test: /A{2}/,
-      replace:
-        date.getHours() > 12
-          ? defaultOptions.options.ampm
-            ? defaultOptions.options.ampm[1]
-            : 'PM'
-          : defaultOptions.options.ampm
-          ? defaultOptions.options.ampm[0]
-          : 'AM',
+      replace: defaultOptions.options.isPm(date.getHours())
+        ? defaultOptions.options.ampm
+          ? defaultOptions.options.ampm[1]
+          : 'PM'
+        : defaultOptions.options.ampm
+        ? defaultOptions.options.ampm[0]
+        : 'AM',
     },
     {
       test: /a{2}/,
-      replace:
-        date.getHours() > 12
-          ? defaultOptions.options.ampm
-            ? defaultOptions.options.ampm[1]
-            : 'pm'
-          : defaultOptions.options.ampm
-          ? defaultOptions.options.ampm[0]
-          : 'am',
+      replace: defaultOptions.options.isPm(date.getHours())
+        ? defaultOptions.options.ampm
+          ? defaultOptions.options.ampm[1]
+          : 'pm'
+        : defaultOptions.options.ampm
+        ? defaultOptions.options.ampm[0]
+        : 'am',
     },
     {
       test: /j{2}/,
@@ -218,36 +269,31 @@ function formate(...params: any[]): string {
     },
     {
       test: /N{2}/,
-      replace: options.months
-        ? options.months[date.getMonth()]
-        : monthsFull[date.getMonth()],
+      replace: defaultOptions.options.months[date.getMonth()],
     },
     {
       test: /n{2}/,
-      replace: options.months
-        ? options.months[date.getMonth()]
-        : monthsAbbr[date.getMonth()],
+      replace: defaultOptions.options.monthsAbbr[date.getMonth()],
     },
     {
       test: /W{2}/,
-      replace: options.weekdays
-        ? options.weekdays[date.getDay()]
-        : daysFull[date.getDay()],
+      replace: defaultOptions.options.weekdays[date.getDay()],
     },
     {
       test: /w{2}/,
-      replace: options.weekdays
-        ? options.weekdays[date.getDay()]
-        : daysAbbr[date.getDay()],
+      replace: defaultOptions.options.weekdaysAbbr[date.getDay()],
     },
   ];
   try {
     matchers.forEach(matcher => {
-      format = format.replace(matcher.test, matcher.replace.toString());
+      defaultOptions.format = defaultOptions.format.replace(
+        matcher.test,
+        matcher.replace.toString(),
+      );
     });
-    return format;
+    return defaultOptions.format;
   } catch (error) {
     throw new Error(`Format date error, you may pass can's by mistake!`);
   }
 }
-export default formate;
+export default format;
