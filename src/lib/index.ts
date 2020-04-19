@@ -7,3 +7,4 @@ export { default as isEqual } from './isEqual';
 export { default as isLeapYear } from './isLeapYear';
 export { default as relative } from './relative';
 export { default as resolve } from './resolve';
+export { default as parse } from './parse';

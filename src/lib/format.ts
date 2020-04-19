@@ -1,6 +1,6 @@
 import padWithZero from './padWithZero';
 import isLeapYear from './isLeapYear';
-
+import { LocaleOptions } from './localOptions';
 // constants
 import daysAbbr from '../constants/daysAbbr';
 import daysFull from '../constants/daysFull';
@@ -14,14 +14,7 @@ interface DefaultOptions {
   date: Date | number;
   options: LocaleOptions;
 }
-interface LocaleOptions {
-  weekdays?: string[];
-  weekdaysAbbr?: string[];
-  months?: string[];
-  monthsAbbr?: string[];
-  ampm?: [string, string];
-  isPm?: (hour: number) => boolean;
-}
+
 interface Matcher {
   test: RegExp;
   replace: number | string;
@@ -32,7 +25,7 @@ let defaultLocaleOptions: LocaleOptions = {
   weekdaysAbbr: daysAbbr,
   months: monthsFull,
   monthsAbbr: monthsAbbr,
-  isPm: hour => {
+  isPm: (hour) => {
     return hour > 12;
   },
 };
@@ -40,17 +33,17 @@ let defaultLocaleOptions: LocaleOptions = {
  * @description set global locale options for format function
  * @param {Locale} localeOptions locale options
  */
-format.setOptions = function(localeOptions: LocaleOptions): void {
+format.setOptions = function (localeOptions: LocaleOptions): void {
   localeOptions.isPm =
     localeOptions.isPm ||
-    function(hour) {
+    function (hour) {
       return hour > 12;
     };
   defaultLocaleOptions = Object.assign({}, defaultLocaleOptions, localeOptions);
 };
 /**
   @description    formate date to assigned format
-  @param  {String} format formatting tokens ,default to `YYYY-MM-DD HH:II:SS`; all supported date formate token:
+  @param  {String} format formatting tokens ,default to ISO8601; all supported date formate token:
           `YYYY` eg.   2018,
           `YY`   eg.   18,
           `MM`   eg.   03,
@@ -100,7 +93,7 @@ function format(
 
 function format(...params: any[]): string {
   let defaultOptions: DefaultOptions = {
-    format: 'YYYY-MM-DD HH:II:SS',
+    format: 'YYYY-MM-DDTHH:II:SS.XXX',
     date: new Date(),
     options: Object.assign({}, defaultLocaleOptions),
   };
@@ -168,7 +161,7 @@ function format(...params: any[]): string {
   // fallback
   defaultOptions.options.isPm =
     defaultOptions.options.isPm ||
-    function(hour) {
+    function (hour) {
       return hour > 12;
     };
   defaultOptions.options.months = defaultOptions.options.months || monthsFull;
@@ -186,10 +179,7 @@ function format(...params: any[]): string {
     },
     {
       test: /Y{2}/,
-      replace: date
-        .getFullYear()
-        .toString()
-        .slice(-2),
+      replace: date.getFullYear().toString().slice(-2),
     },
     {
       test: /M{2}/,
@@ -240,7 +230,7 @@ function format(...params: any[]): string {
       replace: date.getSeconds(),
     },
     {
-      test: /XXX{2}/,
+      test: /X{3}/,
       replace: padForMS(date.getMilliseconds()),
     },
     {
@@ -285,7 +275,7 @@ function format(...params: any[]): string {
     },
   ];
   try {
-    matchers.forEach(matcher => {
+    matchers.forEach((matcher) => {
       defaultOptions.format = defaultOptions.format.replace(
         matcher.test,
         matcher.replace.toString(),

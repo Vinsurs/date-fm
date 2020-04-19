@@ -22,13 +22,13 @@ with `yarn`:
 
 ### Using in Commonjs
 
-#### Formate date
+#### Format
 
 - The easiest way to use it is:
 
 ```js
 const { format } = require('date-fm');
-console.log(format()); // output is "2018-12-20 16:25:55",default to current date
+console.log(format()); // output is "2018-12-20T16:25:55.036",default to current date
 ```
 
 - locale use:
@@ -71,6 +71,13 @@ format.setOptions((localeOptions: LocaleOptions));
       isPm?: (hour: number) => boolean;// default is: hour =>return hour > 12
     }
 */
+```
+
+#### Parse
+
+```js
+const { parse } = require('date-fm');
+console.log(parse('2019-10-25 12:33:21.064', 'YYYY-MM-DD HH:II:SS.XXX')); // just return a native Date object
 ```
 
 #### Resolve relative date
@@ -145,6 +152,7 @@ let sDate = format();
 const {
   compare,
   format,
+  parse,
   isAfter,
   isBefore,
   isBetween,
@@ -157,6 +165,7 @@ const {
 import {
   compare,
   format,
+  parse,
   isAfter,
   isBefore,
   isBetween,
@@ -169,12 +178,12 @@ import {
 
 and then
 
-### <span id= "formate">format(format?:string, time?:Date|number = new Date(),options?:LocaleOptions):string</span>
+## <span id= "formate">format(format?:string, time?:Date|number = new Date(),options?:LocaleOptions):string</span>
 
 - **description** : Returns the corresponding format string according to the specified date format;
 
 - **params** :  
-   `format`:(string) format string,default to 'YYYY-MM-DD HH:II:SS'. see the following table for the [supported format symbols](#format).
+   `format`:(string) format string,default to ISO8601. see the following table for the [supported format symbols](#format).
 
   `time` :(Date|number) Date object or timestamp to format,default to current time.
 
@@ -226,14 +235,22 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns**:(string) formated string
 
-### isLeapYear(year:number|string|Date)
+## parse(target:string,format:string):Date
+
+- **description** :parse date string to native date object
+- **params** :  
+  `target`:(string) string of formated date to be parsed
+  `format`:(string) format string ,see valid format token above
+- **returns**:(Date) parsed date object
+
+## isLeapYear(year:number|string|Date):boolean
 
 - **description** : Decide if it's a leap year
 - **params** :  
   `year`:(number|string|Date)Accept a date object , a number representing the year or a string representing the year can be converted to number
 - **returns**:(boolean) Return `true` if leap year, `false` otherwise
 
-### isBefore(target:Date, comparator?:Date = new Date()):boolean
+## isBefore(target:Date, comparator?:Date = new Date()):boolean
 
 - **description** : Determine whether target precedes comparator
 - **params** :  
@@ -243,7 +260,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns** (boolean) If target returns `true` before comparator, `false` otherwise
 
-### isAfter(target:Date, comparator?:Date = new Date()):boolean
+## isAfter(target:Date, comparator?:Date = new Date()):boolean
 
 - **description** : Determine whether target follows comparator
 - **params** :  
@@ -253,7 +270,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns** :(boolean) If target returns `true` after comparator, `false` otherwise
 
-### isEqual(target:Date, comparator?:Date = new Date()):boolean
+## isEqual(target:Date, comparator?:Date = new Date()):boolean
 
 - **description** : Determine if two dates are equal
 - **params** :  
@@ -261,7 +278,7 @@ The following table is <span id="format">**supported format symbols:**</span>
   `comparator` : (Date) Date to be compared;default to current time
 - **returns** :(boolean) Return true if it is the same date, otherwise return false
 
-### compare(target:Date, comparator?:Date = new Date()):number
+## compare(target:Date, comparator?:Date = new Date()):number
 
 - **description** : Compare two dates.
 - **params** :  
@@ -271,7 +288,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns**:(boolean) If target is larger than comparator, return 1, equal return 0, otherwise return - 1
 
-### resolve(relative:string,baseDate?:Date|number=new Date(), format?:string|false = "YYYY/MM/DD HH:II:SS"):Date|string
+## resolve(relative:string,baseDate?:Date|number=new Date(), format?:string|false ):Date|string
 
 - **description** : Resolve relative date
 - **params** :
@@ -298,14 +315,14 @@ resolve('+3d4h');
 
 - **returns**: (Date|string) If `format` is set to `false`, it will return a parsed date object, otherwise it will return the format string of the parsed object!
 
-### relative(date:Date|number):String
+## relative(date:Date|number):String
 
 - **description** : Calculates the specified date relative to the current time and return the corresponding string
 - **params** :  
    `date`: (Date|number) date object or timestamp number
 - **returns** (string) relative string
 
-### isBetween(target:Date|number, start:Date|number, end:Date|number):Boolean
+## isBetween(target:Date|number, start:Date|number, end:Date|number):Boolean
 
 - **description** Judge whether the date is within the specified range
 - **params**:
@@ -317,3 +334,7 @@ resolve('+3d4h');
   `end`:(Date|number) End of date range,can be date object or timestamp number
 
 - **returns**:(boolean) Returns `true` if the specified date is in the range, `false` otherwise
+
+# License
+
+MIT

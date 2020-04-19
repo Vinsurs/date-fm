@@ -8,7 +8,7 @@ import formate from './format';
             oparator:    +(add)      -(sub)
             supportedToken: `year`  `month`  `week` `day` `hour` `minute` `second` `millisecond` `lastyear` `lastmonth` `lastweek` `yesterday` `today` `tomorrow` `now` 
    @param {Date|number} baseDate base date or base timestamp
-   @param {string|false} format optional,default to `YYYY-MM-DD HH:II:SS` 
+   @param {string|false} format optional,default to ISO8601 
    @returns {Date|string} If `format` is set to false, the parsed date object will be returned, otherwise the format string will be returned
 //  */
 function resolve(relative: string): Date | string;
@@ -22,7 +22,7 @@ function resolve(
 function resolve(relative: string, ...rest: any[]): Date | string {
   let defaultRest = {
     baseDate: new Date(),
-    format: 'YYYY-MM-DD HH:II:SS',
+    format: 'YYYY-MM-DDTHH:II:SS.XXX',
   };
   let shouldReturnDate: boolean = false;
   if (rest.length === 1) {
