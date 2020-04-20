@@ -77,27 +77,36 @@ format.setOptions((localeOptions: LocaleOptions));
 
 ```js
 const { parse } = require('date-fm');
-console.log(parse('2019-10-25 12:33:21.064', 'YYYY-MM-DD HH:II:SS.XXX')); // just return a native Date object
+// just return a native Date object
+let oDate = parse('2019-10-25 12:33:21.064', 'YYYY-MM-DD HH:II:SS.XXX');
+// fallback date, default to current date
+let fallbackDate = new Date(2019, 9, 25);
+parse('12:33:21.064', 'HH:II:SS.XXX', fallbackDate);
 ```
 
-#### Resolve relative date
+#### Resolve
 
 ```js
-const {resolve,relative} = require("date-fm");
-console.log(resolve("+3days4hours")); // output is "2019-12-20 20:25:55"
-console.log(resolve("-3years2weeks","YYYY/MM/DD HH:II:SS aa")); // output is "2016/12/20 16:25:55 pm"
+const { resolve, relative } = require('date-fm');
+console.log(resolve('+3days4hours')); // output is "2019-12-20 20:25:55"
+console.log(resolve('-3years2weeks', 'YYYY/MM/DD HH:II:SS aa')); // output is "2016/12/20 16:25:55 pm"
 // abbreviation of "+3days4hours"
-console.log(resolve("+3d4h")); // output is "2019-12-20 20:25:55"
-console.log(resolve("today")); // output is "2019-12-13 00:00:00"
+console.log(resolve('+3d4h')); // output is "2019-12-20 20:25:55"
+console.log(resolve('today')); // output is "2019-12-13 00:00:00"
 // based date
-console.log(resolve('+1d',new Date(2019,11,22)));//output is "2019-12-23 00:00:00"
-let date= resolve("yesterday",false); // return a native Date Object
+console.log(resolve('+1d', new Date(2019, 11, 22))); //output is "2019-12-23 00:00:00"
+let date = resolve('yesterday', false); // return a native Date Object
+```
+
+#### Relative
+
+```js
 console.log(relative(new Date(2017, 8, 24)));// output is "2 years ago"
 let timestamp = Date.now();
 console.log(relative(timestamp)));// output is "a few seconds ago"
 ```
 
-#### Compare date
+#### Compare
 
 ```js
 const {
@@ -235,12 +244,16 @@ The following table is <span id="format">**supported format symbols:**</span>
 
 - **returns**:(string) formated string
 
-## parse(target:string,format:string):Date
+## parse(target:string,format:string,backupDate:Date = new Date):Date
 
 - **description** :parse date string to native date object
 - **params** :  
   `target`:(string) string of formated date to be parsed
+
   `format`:(string) format string ,see valid format token above
+
+  `backupDate`:(Date) fallback date when no date part is provided, default to current date
+
 - **returns**:(Date) parsed date object
 
 ## isLeapYear(year:number|string|Date):boolean

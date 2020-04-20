@@ -30,9 +30,14 @@ function transform(regRule: RegExp, format: string, target: string) {
  * @description parse date string to native date object
  * @param {string} target string of formated date to be parsed
  * @param {string} format format string
+ * @param {Date} backupDate fallback date when no date part is provided
  * @returns {Date} parsed date object
  */
-function parse(target: string, format: string) {
+function parse(
+  target: string,
+  format: string,
+  backupDate: Date = new Date(),
+): Date {
   let yearRes = transform(/Y{2,4}/, trim(format), trim(target));
   let monthRes = transform(/m{2}/i, yearRes.afterFormat, yearRes.afterTarget);
 
@@ -46,7 +51,7 @@ function parse(target: string, format: string) {
   let minRes = transform(/i{2}/i, hourRes.afterFormat, hourRes.afterTarget);
   let secRes = transform(/s{2}/i, minRes.afterFormat, minRes.afterTarget);
   let msRes = transform(/XXX/i, secRes.afterFormat, secRes.afterTarget);
-  let now = new Date();
+  let now = backupDate;
   let year = yearRes.result
     ? yearRes.result.toString().length === 2
       ? now.getFullYear().toString().slice(0, -2) + yearRes.result
@@ -54,10 +59,10 @@ function parse(target: string, format: string) {
     : now.getFullYear();
   let month = monthRes.result ? monthRes.result - 1 : now.getMonth();
   let date = dateRes.result ? dateRes.result : now.getDate();
-  let hour = hourRes.result ? hourRes.result : now.getHours();
-  let min = minRes.result ? minRes.result : now.getMinutes();
-  let sec = secRes.result ? secRes.result : now.getSeconds();
-  let ms = msRes.result ? msRes.result : now.getMilliseconds();
+  let hour = hourRes.result ? hourRes.result : 0;
+  let min = minRes.result ? minRes.result : 0;
+  let sec = secRes.result ? secRes.result : 0;
+  let ms = msRes.result ? msRes.result : 0;
   return new Date(parseInt(year.toString()), month, date, hour, min, sec, ms);
 }
 export default parse;
