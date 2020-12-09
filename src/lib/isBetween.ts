@@ -1,3 +1,6 @@
+import isDate from '../utils/isDate';
+import isAfter from './isAfter';
+import isBefore from './isBefore';
 /**
  * @description Judge whether the date is within the specified range
  * @param  {Date|timestamp} target Date to judge
@@ -5,9 +8,6 @@
  * @param  {Date|timestamp} end End of date range
  * @returns {boolean} Returns `true` if the specified date is in the range, `false` otherwise
  */
-import isDate from './isDate';
-import isAfter from './isAfter';
-import isBefore from './isBefore';
 export default function isBetween(
   target: Date | number,
   start: Date | number,

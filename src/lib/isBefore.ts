@@ -1,10 +1,10 @@
+import isDate from '../utils/isDate';
 /**
  * @description Determine whether target precedes comparator
  * @param  {Date} target Date to compare
  * @param  {Date} comparator Date to be compared;default to current time
  * @returns {boolean}
  */
-import isDate from './isDate';
 export default function isBefore(
   target: Date,
   comparator: Date = new Date(),

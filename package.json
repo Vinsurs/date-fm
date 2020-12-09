@@ -1,6 +1,6 @@
 {
   "name": "date-fm",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "Date formatting library,supports browser and nodejs",
   "main": "dist/date-fm.min.js",
   "types": "dist/lib/index.d.ts",
@@ -34,8 +34,7 @@
     "time"
   ],
   "engines": {
-    "node": ">6",
-    "npm": ">5"
+    "node": ">6"
   },
   "license": "MIT",
   "devDependencies": {

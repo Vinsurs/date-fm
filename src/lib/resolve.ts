@@ -1,6 +1,6 @@
-import trim from './trim';
-import startsWith from './startsWith';
-import normalize from './normalize';
+import trim from '../utils/trim';
+import startsWith from '../utils/startsWith';
+import normalize from '../utils/normalize';
 import formate from './format';
 /**
  * @description compute relative date
@@ -22,7 +22,7 @@ function resolve(
 function resolve(relative: string, ...rest: any[]): Date | string {
   let defaultRest = {
     baseDate: new Date(),
-    format: 'YYYY-MM-DDTHH:II:SS.XXX',
+    format: 'YYYY-MM-DD HH:II:SS',
   };
   let shouldReturnDate: boolean = false;
   if (rest.length === 1) {

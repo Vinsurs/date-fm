@@ -1,14 +1,21 @@
-import padWithZero from './padWithZero';
+import padWithZero from '../utils/padWithZero';
 import isLeapYear from './isLeapYear';
-import { LocaleOptions } from './localOptions';
+import padForMS from '../utils/padForMS';
 // constants
 import daysAbbr from '../constants/daysAbbr';
 import daysFull from '../constants/daysFull';
 import monthsAbbr from '../constants/monthsAbbr';
 import monthsFull from '../constants/monthsFull';
-import padForMS from './padForMS';
 
 // interface
+export interface LocaleOptions {
+  weekdays?: string[];
+  weekdaysAbbr?: string[];
+  months?: string[];
+  monthsAbbr?: string[];
+  ampm?: [string, string];
+  isPm?: (hour: number) => boolean;
+}
 interface DefaultOptions {
   format: string;
   date: Date | number;
@@ -20,54 +27,51 @@ interface Matcher {
   replace: number | string;
 }
 // default localeOptions
+function defaultIsPm(hour: number) {
+  return hour > 12;
+}
 let defaultLocaleOptions: LocaleOptions = {
   weekdays: daysFull,
   weekdaysAbbr: daysAbbr,
   months: monthsFull,
   monthsAbbr: monthsAbbr,
-  isPm: (hour) => {
-    return hour > 12;
-  },
+  ampm: ["am","pm"],
+  isPm: defaultIsPm,
 };
 /**
  * @description set global locale options for format function
- * @param {Locale} localeOptions locale options
+ * @param {LocaleOptions} localeOptions locale options
  */
 format.setOptions = function (localeOptions: LocaleOptions): void {
-  localeOptions.isPm =
-    localeOptions.isPm ||
-    function (hour) {
-      return hour > 12;
-    };
   defaultLocaleOptions = Object.assign({}, defaultLocaleOptions, localeOptions);
 };
 /**
   @description    formate date to assigned format
   @param  {String} format formatting tokens ,default to ISO8601; all supported date formate token:
-          `YYYY` eg.   2018,
-          `YY`   eg.   18,
-          `MM`   eg.   03,
-          `mm`   eg.   3,
-          `DD`   eg.   08,
-          `dd`   eg.   8,
-          `HH`   eg.   06 ,12 ,22h format,
-          `hh`   eg.   6 ,12,
-          `KK`   eg.   06 ,02 ,12h format,
-          `kk`   eg.   6 ,2,
-          `II`   eg.   08,
-          `ii`   eg.   8,
-          `SS`   eg.   02,
-          `ss`   eg.   2,
-          `XXX`  millisecond,
-          `AA`    eg.   'AM',
-          `aa`    eg.   'am',
-          `jj`    eg.   365|366,
-          `NN`    eg.   'December',
-          `nn`    eg.   'Dec',
-          `WW`    eg.   'Sunday',
-          `ww`    eg.   'Sun'  ;
+         - `YYYY` eg.   2018,
+         - `YY`   eg.   18,
+         - `MM`   eg.   03,
+         - `mm`   eg.   3,
+         - `DD`   eg.   08,
+         - `dd`   eg.   8,
+         - `HH`   eg.   06 ,12 ,22h format,
+         - `hh`   eg.   6 ,12,
+         - `KK`   eg.   06 ,02 ,12h format,
+         - `kk`   eg.   6 ,2,
+         - `II`   eg.   08,
+         - `ii`   eg.   8,
+         - `SS`   eg.   02,
+         - `ss`   eg.   2,
+         - `XXX`  millisecond,
+         - `AA`    eg.   'AM',
+         - `aa`    eg.   'am',
+         - `jj`    eg.   365|366,
+         - `NN`    eg.   'December',
+         - `nn`    eg.   'Dec',
+         - `WW`    eg.   'Sunday',
+         - `ww`    eg.   'Sun'  ;
   @param   {Date|number} date Date Object or timestamp,default to current time
-  @param   {Object} options Optional,locale configuration objects
+  @param   {LocaleOptions} options Optional,locale configuration objects
   @param   {Array} options.weekdays Array of custom weekdays
   @param   {Array} options.weekdaysAbbr Array of custom weekdaysAbbr
   @param   {Array} options.months Array of custom months
@@ -93,7 +97,7 @@ function format(
 
 function format(...params: any[]): string {
   let defaultOptions: DefaultOptions = {
-    format: 'YYYY-MM-DDTHH:II:SS.XXX',
+    format: 'YYYY-MM-DD HH:II:SS',
     date: new Date(),
     options: Object.assign({}, defaultLocaleOptions),
   };
@@ -161,15 +165,14 @@ function format(...params: any[]): string {
   // fallback
   defaultOptions.options.isPm =
     defaultOptions.options.isPm ||
-    function (hour) {
-      return hour > 12;
-    };
+    defaultIsPm;
   defaultOptions.options.months = defaultOptions.options.months || monthsFull;
   defaultOptions.options.monthsAbbr =
     defaultOptions.options.monthsAbbr || monthsAbbr;
   defaultOptions.options.weekdays = defaultOptions.options.weekdays || daysFull;
   defaultOptions.options.weekdaysAbbr =
     defaultOptions.options.weekdaysAbbr || daysAbbr;
+    defaultOptions.options.ampm = defaultOptions.options.ampm || ["am","pm"];
   // match
   let date: Date = <Date>defaultOptions.date;
   let matchers: Array<Matcher> = [

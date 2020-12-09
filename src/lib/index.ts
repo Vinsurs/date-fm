@@ -1,5 +1,5 @@
 export { default as compare } from './compare';
-export { default as format } from './format';
+export { default as format, LocaleOptions } from './format';
 export { default as isAfter } from './isAfter';
 export { default as isBefore } from './isBefore';
 export { default as isBetween } from './isBetween';

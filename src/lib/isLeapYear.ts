@@ -1,9 +1,9 @@
+import isDate from '../utils/isDate';
 /**
  * @description Decide if it's a leap year
  * @param {number|Date} year number of year or date object
  * @returns {boolean}
  */
-import isDate from './isDate';
 export default function isLeapYear(year: Date | number): boolean {
   if (isDate(year)) {
     year = (<Date>year).getFullYear();

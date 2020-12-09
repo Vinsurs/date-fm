@@ -212,7 +212,7 @@ and then
   you can alse set **global locale config** for format function like this:
 
 ```js
-format.setOptions((localeOptions: LocaleOptions));
+format.setOptions(localeOptions: LocaleOptions);
 ```
 
 The following table is <span id="format">**supported format symbols:**</span>
@@ -250,7 +250,7 @@ The following table is <span id="format">**supported format symbols:**</span>
 - **params** :  
   `target`:(string) string of formated date to be parsed
 
-  `format`:(string) format string ,see valid format token above
+  `format`:(string) format string, only supports date format divided by `/` or `-`,such as `2018/2/10 12:32:12` or `2018-2-10 12:32:12.999`
 
   `backupDate`:(Date) fallback date when no date part is provided, default to current date
 
